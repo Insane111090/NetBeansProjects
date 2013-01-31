@@ -60,7 +60,7 @@ public class OracleNoSQLConverter {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 connectionSetupDialoge.setTitle("Connection settings");
-                connectionSetupDialoge.setSize(550,300);
+                connectionSetupDialoge.setSize(550,350);
                 connectionSetupDialoge.setVisible(true);  
             }
         });
@@ -103,7 +103,7 @@ public class OracleNoSQLConverter {
         final static JPasswordField passwordTxt = new JPasswordField();//Field for password input
         final static JTextField Status_connection_txt = new JTextField();//Field for connection status(Failed or not)
         final static JTextField conn_res_txt = new JTextField();//Field for connection url
-        final static JTextField Connection_error_txt = new JTextField();//Connection error
+        final static JTextArea Connection_error_txt = new JTextArea();//Connection error
         public static boolean isConnected;
         /*
          * Procedure for cleaning textFields on JDialoge
@@ -117,8 +117,7 @@ public class OracleNoSQLConverter {
             Status_connection_txt.setText("");
             conn_res_txt.setText("");
             Connection_error_txt.setText("");
-            Status_connection_txt.setBackground(Color.WHITE);
-            
+            Status_connection_txt.setBackground(Color.WHITE);           
         }
         
         /*
