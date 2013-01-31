@@ -4,9 +4,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.*;
 import javax.swing.*;
-import java.lang.*;
-import java.util.*;
 import javax.swing.border.TitledBorder;
+import net.miginfocom.swing.MigLayout;
+import net.miginfocom.layout.LC;  
 
 /**
  * @author agavrilov
@@ -14,21 +14,21 @@ import javax.swing.border.TitledBorder;
 public class OracleNoSQLConverter {
 
     static final JFrame mainForm = new JFrame();
-    static final JPanel mainPanel = new JPanel(new BorderLayout());
-    static final JPanel ConnectionSettings = new JPanel(new BorderLayout());
-    static final JPanel resultTables = new JPanel(new BorderLayout());
+    static final JPanel mainPanel = new JPanel(new MigLayout());
+    static final JPanel ConnectionSettings = new JPanel(new MigLayout());
+    static final JPanel resultTables = new JPanel(new MigLayout());
     static final ConnectionToDBDialog connectionSetupDialoge = new ConnectionToDBDialog();
     static String server,sid,port,username,password,url;
     final static String driverName = "oracle.jdbc.driver.OracleDriver";
     static Connection connection;
     static boolean isConnected;
-    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         ConnectionSettings.setBorder(new TitledBorder("Настройка подключения к БД"));
         resultTables.setBorder(new TitledBorder("Список таблиц схемы"));
+        
         
         final JList listOfTables = new JList();//List of result tables from Database
         final JButton openConnectionSetup = new JButton("Configure connection");//Button pressed for configure connection
@@ -37,7 +37,17 @@ public class OracleNoSQLConverter {
         final JLabel urlconn = new JLabel("URL:");
         final JTextField connectedUrltxt = new JTextField();
         connectedUrltxt.setEditable(false);
+        final JButton exitApplic = new JButton("Exit");
         
+        
+        exitApplic.addActionListener(new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                System.exit(0);
+            }
+        });
+        exitApplic.setToolTipText("Exit application");
         /*
          * Creation of "Status" textBox on MainForm in Panel - ConnectionSettings
          */
@@ -52,7 +62,7 @@ public class OracleNoSQLConverter {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 connectionSetupDialoge.setTitle("Connection settings");
-                connectionSetupDialoge.setSize(200,200);
+                connectionSetupDialoge.setSize(550,300);
                 connectionSetupDialoge.setVisible(true);  
             }
         });
@@ -60,22 +70,27 @@ public class OracleNoSQLConverter {
         /*
          * Adding elements on MainForm window
          */
-        ConnectionSettings.add(connStatus,BorderLayout.BEFORE_LINE_BEGINS );
-        ConnectionSettings.add(statusTxt, BorderLayout.AFTER_LINE_ENDS);
-        ConnectionSettings.add(openConnectionSetup, BorderLayout.AFTER_LAST_LINE);
-        ConnectionSettings.add(urlconn, BorderLayout.NORTH);
-        //ConnectionSettings.add(connectedUrltxt, BorderLayout);
-        mainPanel.add(ConnectionSettings, BorderLayout.PAGE_START);
+        ConnectionSettings.add(connStatus, "split");
+        ConnectionSettings.add(statusTxt,"wrap 10, w :100:300");//wrap to the next row
+        ConnectionSettings.add(urlconn,"split");
+        ConnectionSettings.add(connectedUrltxt, "wrap 10, w :500:800, gapleft 20");
+        ConnectionSettings.add(openConnectionSetup,"wrap");
+        
         resultTables.add(listOfTables);
-        mainPanel.add(resultTables, BorderLayout.CENTER);
+        
+        mainPanel.add(ConnectionSettings, "wrap, dock north");        
+        mainPanel.add(resultTables,"wrap 270,w :300:");
+        mainPanel.add(exitApplic,"align right, gapright 20");
+        
         mainForm.setTitle("MainForm");
         mainForm.setVisible(true);
-       // mainForm.setResizable(false);
+        mainForm.setResizable(false);
         mainForm.setSize(500, 500);
         mainForm.setContentPane(mainPanel);
-        //mainForm.pack();
         mainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainForm.setLocationRelativeTo(null);//Appears on the screen center
+        //mainForm.pack();
+        
         connectionSetupDialoge.setModal(true);//Makes window modal
         
     }
@@ -83,13 +98,6 @@ public class OracleNoSQLConverter {
      * Class for connection to Database, where user enter server, port, username and password
      */
     public static final class ConnectionToDBDialog extends JDialog{
-        
-        final JPanel ConnectionPanel = new JPanel(new BorderLayout());
-        final JLabel serverLbl = new JLabel("Server: ");
-        final JLabel portLbl = new JLabel("Port: ");
-        final JLabel sidLbl = new JLabel("SID: ");
-        final JLabel usernameLbl = new JLabel("Username: ");
-        final JLabel passwordLbl = new JLabel("Password: ");
         final static JTextField serverTxt = new JTextField();//Field for server input
         final static JTextField portTxt = new JTextField();//Field for port input
         final static JTextField sidTxt = new JTextField();//Field for sid input
@@ -98,9 +106,6 @@ public class OracleNoSQLConverter {
         final static JTextField Status_connection_txt = new JTextField();//Field for connection status(Failed or not)
         final static JTextField conn_res_txt = new JTextField();//Field for connection url
         final static JTextField Connection_error_txt = new JTextField();//Connection error
-        static JButton ConnectButton = new JButton("Connect");
-        static JButton OkButton = new JButton("Ok");
-        static JButton CancelButton = new JButton("Cancel");
         
         /*
          * Procedure wich connects us to DB
@@ -150,16 +155,47 @@ public class OracleNoSQLConverter {
         
         ConnectionToDBDialog(){
             super(mainForm);//calls mainForm constructor
+            final JPanel ConnectionPanel = new JPanel(new MigLayout());
+            final JPanel InputServerPanel = new JPanel(new MigLayout());
+            final JPanel InputUserPanel = new JPanel(new MigLayout());
+            final JLabel serverLbl = new JLabel("Server: ");
+            final JLabel portLbl = new JLabel("Port: ");
+            final JLabel sidLbl = new JLabel("SID: ");
+            final JLabel usernameLbl = new JLabel("Username: ");
+            final JLabel passwordLbl = new JLabel("Password: ");
+            final JLabel Error = new JLabel("Error: ");
+            final JLabel stat = new JLabel("Status: ");
+            final JButton ConnectButton = new JButton("Connect");//Button for connection
+            final JButton OkButton = new JButton("Ok");
+            final JButton CancelButton = new JButton("Cancel");//Exit button
+            
             setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             /*
              * Adding atributes on connectionToDB panel
              */
-            ConnectionPanel.add(serverLbl, BorderLayout.BEFORE_FIRST_LINE);
-            ConnectionPanel.add(usernameLbl, BorderLayout.LINE_END);
-            ConnectionPanel.add(portLbl, BorderLayout.LINE_START);
-            ConnectionPanel.add(sidLbl, BorderLayout.AFTER_LAST_LINE);
-            ConnectionPanel.add(passwordLbl, BorderLayout.WEST);
-            ConnectionPanel.add(OkButton);
+            InputUserPanel.setBorder(new TitledBorder("Username and password settings"));
+            InputUserPanel.add(usernameLbl,"split");
+            InputUserPanel.add(usernameTxt,"wrap 10, w 100:150:200");
+            InputUserPanel.add(passwordLbl,"split");
+            InputUserPanel.add(passwordTxt,"wrap 28, w 100:150:200");
+            
+            InputServerPanel.setBorder(new TitledBorder("Server connection settings"));
+            InputServerPanel.add(serverLbl, "split");
+            InputServerPanel.add(serverTxt,"w 150:150:200, wrap");
+            InputServerPanel.add(portLbl, "split");
+            InputServerPanel.add(portTxt,"w 150:150:200, gapleft 18, wrap");
+            InputServerPanel.add(sidLbl,"split");
+            InputServerPanel.add(sidTxt,"w 150:150:200, gapleft 22, wrap 10");
+            
+            ConnectionPanel.add(InputServerPanel,"split");
+            ConnectionPanel.add(InputUserPanel,"wrap 10, gapleft 20");
+            ConnectionPanel.add(ConnectButton,"split");
+            ConnectionPanel.add(conn_res_txt,"wrap 10,grow");
+            ConnectionPanel.add(stat,"split");
+            ConnectionPanel.add(Status_connection_txt,"wrap,w 50:70:");
+            ConnectionPanel.add(Error,"split");
+            ConnectionPanel.add(Connection_error_txt,"wrap 24, w :1200:,gapleft 12");
+            ConnectionPanel.add(OkButton,"split,align right");
             ConnectionPanel.add(CancelButton);
            
             /*
@@ -205,9 +241,7 @@ public class OracleNoSQLConverter {
             
             setContentPane(ConnectionPanel);
             setLocationRelativeTo(null);
-            
-            
-            
+
             //pack();
             
         }
