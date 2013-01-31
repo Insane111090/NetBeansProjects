@@ -17,11 +17,12 @@ public class OracleNoSQLConverter {
     static final JPanel mainPanel = new JPanel(new MigLayout());
     static final JPanel ConnectionSettings = new JPanel(new MigLayout());
     static final JPanel resultTables = new JPanel(new MigLayout());
+    static public JTextField statusTxt = new JTextField("Not connected");
+    static public JTextField connectedUrltxt = new JTextField();
     static final ConnectionToDBDialog connectionSetupDialoge = new ConnectionToDBDialog();
-    static String server,sid,port,username,password,url;
-    final static String driverName = "oracle.jdbc.driver.OracleDriver";
+    static String driverName = "oracle.jdbc.driver.OracleDriver";
     static Connection connection;
-    static boolean isConnected;
+    
     /**
      * @param args the command line arguments
      */
@@ -29,17 +30,15 @@ public class OracleNoSQLConverter {
         ConnectionSettings.setBorder(new TitledBorder("Настройка подключения к БД"));
         resultTables.setBorder(new TitledBorder("Список таблиц схемы"));
         
-        
         final JList listOfTables = new JList();//List of result tables from Database
         final JButton openConnectionSetup = new JButton("Configure connection");//Button pressed for configure connection
         openConnectionSetup.setToolTipText("Press for enter connection setup");//ToolTip for button
         final JLabel connStatus = new JLabel("Status: ");//Connection status Label in MainForm
         final JLabel urlconn = new JLabel("URL:");
-        final JTextField connectedUrltxt = new JTextField();
+        
         connectedUrltxt.setEditable(false);
         final JButton exitApplic = new JButton("Exit");
-        
-        
+       
         exitApplic.addActionListener(new AbstractAction() {
 
             @Override
@@ -51,9 +50,8 @@ public class OracleNoSQLConverter {
         /*
          * Creation of "Status" textBox on MainForm in Panel - ConnectionSettings
          */
-        final JTextField statusTxt = new JTextField("Not connected");
-        statusTxt.setBackground(Color.red);
         statusTxt.setEditable(false);
+        statusTxt.setBackground(Color.red);
         
         /*
          * On "Configure connection" button click event
@@ -106,15 +104,33 @@ public class OracleNoSQLConverter {
         final static JTextField Status_connection_txt = new JTextField();//Field for connection status(Failed or not)
         final static JTextField conn_res_txt = new JTextField();//Field for connection url
         final static JTextField Connection_error_txt = new JTextField();//Connection error
+        public static boolean isConnected;
+        /*
+         * Procedure for cleaning textFields on JDialoge
+         */
+        public static void ClearFields(){
+            serverTxt.setText("");
+            portTxt.setText("");
+            sidTxt.setText("");
+            usernameTxt.setText("");
+            passwordTxt.setText("");
+            Status_connection_txt.setText("");
+            conn_res_txt.setText("");
+            Connection_error_txt.setText("");
+            Status_connection_txt.setBackground(Color.WHITE);
+            
+        }
         
         /*
          * Procedure wich connects us to DB
          */
          public static void SetConnection()
             {
+                String server,sid,port,username,password,url;
+               
                 try{
                     Class.forName(driverName);
-                    server = serverTxt.getText().toString();//"oracle.avalon.ru"
+                    server = serverTxt.getText().toString();//"oracle11.avalon.ru"
                     sid = sidTxt.getText().toUpperCase().toString();//"ORCL";
                     port =portTxt.getText().toString();//"1521";
                     username = usernameTxt.getText().toString();//"andgavr";
@@ -122,7 +138,7 @@ public class OracleNoSQLConverter {
                     url = "jdbc:oracle:thin:@" + server + ":" + port + ":" + sid;
                     connection = DriverManager.getConnection(url, username, password);
                     
-                    if(connection.equals(null)){
+                    if (connection.equals(null)){
                     isConnected = false;
                     Status_connection_txt.setBackground(Color.RED);
                     Status_connection_txt.setText("Failed");
@@ -150,7 +166,7 @@ public class OracleNoSQLConverter {
                     Status_connection_txt.setText("Failed");
                     conn_res_txt.setText("");
                 }
-               
+               //return connection;
             }
         
         ConnectionToDBDialog(){
@@ -205,6 +221,7 @@ public class OracleNoSQLConverter {
 
                 @Override
                 public void actionPerformed(ActionEvent ae) {
+                    ClearFields();
                     dispose();
                 }
             });
@@ -219,6 +236,24 @@ public class OracleNoSQLConverter {
              * Calling a procedure for establish connection 
              */
             SetConnection();
+                }
+            });
+            
+            OkButton.addActionListener(new AbstractAction() {
+
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    if (isConnected){
+                        OracleNoSQLConverter.statusTxt.setText("Connected");
+                        OracleNoSQLConverter.statusTxt.setBackground(Color.green);
+                        OracleNoSQLConverter.connectedUrltxt.setText(conn_res_txt.getText());
+                    }
+                    else{
+                        OracleNoSQLConverter.statusTxt.setText("Not connected");
+                        OracleNoSQLConverter.statusTxt.setBackground(Color.red);
+                        OracleNoSQLConverter.connectedUrltxt.setText(conn_res_txt.getText());
+                    }
+                    dispose();
                 }
             });
             /*
