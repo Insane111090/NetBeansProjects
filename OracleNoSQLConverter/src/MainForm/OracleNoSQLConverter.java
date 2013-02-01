@@ -3,10 +3,10 @@ package MainForm;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
-import net.miginfocom.layout.LC;  
 
 /**
  * @author agavrilov
@@ -22,23 +22,27 @@ public class OracleNoSQLConverter {
     static final ConnectionToDBDialog connectionSetupDialoge = new ConnectionToDBDialog();
     static String driverName = "oracle.jdbc.driver.OracleDriver";
     static Connection connection;
-    
+    static ArrayList<String> tablesArray = new ArrayList<>();
+    static JList listOfTables = new JList(tablesArray.toArray());//List of result tables from Database
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         ConnectionSettings.setBorder(new TitledBorder("Настройка подключения к БД"));
-        resultTables.setBorder(new TitledBorder("Список таблиц схемы"));
-        
-        final JList listOfTables = new JList();//List of result tables from Database
+        resultTables.setBorder(new TitledBorder("Список таблиц"));
+
         final JButton openConnectionSetup = new JButton("Configure connection");//Button pressed for configure connection
         openConnectionSetup.setToolTipText("Press for enter connection setup");//ToolTip for button
+        
         final JLabel connStatus = new JLabel("Status: ");//Connection status Label in MainForm
         final JLabel urlconn = new JLabel("URL:");
         
         connectedUrltxt.setEditable(false);
+        
+        /*
+         * Exit button 
+         */
         final JButton exitApplic = new JButton("Exit");
-       
         exitApplic.addActionListener(new AbstractAction() {
 
             @Override
@@ -47,6 +51,7 @@ public class OracleNoSQLConverter {
             }
         });
         exitApplic.setToolTipText("Exit application");
+        
         /*
          * Creation of "Status" textBox on MainForm in Panel - ConnectionSettings
          */
@@ -74,7 +79,7 @@ public class OracleNoSQLConverter {
         ConnectionSettings.add(connectedUrltxt, "wrap 10, w :500:800, gapleft 20");
         ConnectionSettings.add(openConnectionSetup,"wrap");
         
-        resultTables.add(listOfTables);
+        resultTables.add(listOfTables,"w :500:,h :300:, wrap 50");
         
         mainPanel.add(ConnectionSettings, "wrap, dock north");        
         mainPanel.add(resultTables,"wrap 270,w :300:");
@@ -82,16 +87,15 @@ public class OracleNoSQLConverter {
         
         mainForm.setTitle("MainForm");
         mainForm.setVisible(true);
-        mainForm.setResizable(false);
+       // mainForm.setResizable(false);
         mainForm.setSize(500, 500);
         mainForm.setContentPane(mainPanel);
         mainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainForm.setLocationRelativeTo(null);//Appears on the screen center
-        //mainForm.pack();
-        
-        connectionSetupDialoge.setModal(true);//Makes window modal
-        
+
+        connectionSetupDialoge.setModal(true);//Makes window modal       
     }
+    
     /*
      * Class for connection to Database, where user enter server, port, username and password
      */
@@ -105,6 +109,7 @@ public class OracleNoSQLConverter {
         final static JTextField conn_res_txt = new JTextField();//Field for connection url
         final static JTextArea Connection_error_txt = new JTextArea();//Connection error
         public static boolean isConnected;
+       
         /*
          * Procedure for cleaning textFields on JDialoge
          */
@@ -121,51 +126,36 @@ public class OracleNoSQLConverter {
         }
         
         /*
-         * Procedure wich connects us to DB
+         * Procedure wich creates a connection to DB
          */
-         public static void SetConnection()
+         public static Connection CreateConnection(String username,
+                                                   String password,
+                                                   String url) throws ClassNotFoundException 
             {
-                String server,sid,port,username,password,url;
-               
+                Class.forName(driverName);
                 try{
-                    Class.forName(driverName);
-                    server = serverTxt.getText().toString();//"oracle11.avalon.ru"
-                    sid = sidTxt.getText().toUpperCase().toString();//"ORCL";
-                    port =portTxt.getText().toString();//"1521";
-                    username = usernameTxt.getText().toString();//"andgavr";
-                    password = new String(passwordTxt.getPassword());//"andgavr";
-                    url = "jdbc:oracle:thin:@" + server + ":" + port + ":" + sid;
-                    connection = DriverManager.getConnection(url, username, password);
-                    
-                    if (connection.equals(null)){
+                connection = DriverManager.getConnection(url, username, password);      
+                }catch (SQLException e){
+                        Connection_error_txt.setText("SQL Error: " + e.getErrorCode()+"; " + e.getMessage());
+                        isConnected = false;
+                        Status_connection_txt.setBackground(Color.RED);
+                        Status_connection_txt.setText("Failed");
+                        conn_res_txt.setText("");
+                }
+                if (connection  == null){
                     isConnected = false;
                     Status_connection_txt.setBackground(Color.RED);
                     Status_connection_txt.setText("Failed");
                     conn_res_txt.setText("");
-                                                }
-                    else{
+                }
+                else{
+                    isConnected = true;
                     Connection_error_txt.setText("");
                     Status_connection_txt.setBackground(Color.green);
                     Status_connection_txt.setText("Succeed");
                     conn_res_txt.setText("Connected to: " + url);
-                    isConnected = true;
-                        }
                 }
-                catch (ClassNotFoundException e){
-                    Connection_error_txt.setText("ClassNotFoundException: " + e.getMessage().toString());
-                    isConnected = false;
-                    Status_connection_txt.setBackground(Color.RED);
-                    Status_connection_txt.setText("Failed");
-                    conn_res_txt.setText("");      
-                }
-                catch (SQLException e){
-                    Connection_error_txt.setText("SQL Error: " + e.getErrorCode()+"; " + e.getMessage());
-                    isConnected = false;
-                    Status_connection_txt.setBackground(Color.RED);
-                    Status_connection_txt.setText("Failed");
-                    conn_res_txt.setText("");
-                }
-               //return connection;
+               return connection;
             }
         
         ConnectionToDBDialog(){
@@ -183,8 +173,9 @@ public class OracleNoSQLConverter {
             final JButton ConnectButton = new JButton("Connect");//Button for connection
             final JButton OkButton = new JButton("Ok");
             final JButton CancelButton = new JButton("Cancel");//Exit button
-            
+
             setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            
             /*
              * Adding atributes on connectionToDB panel
              */
@@ -217,25 +208,40 @@ public class OracleNoSQLConverter {
              * Event for cancel button (dispose the form)
              */
             CancelButton.addActionListener(new AbstractAction() {
-
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     ClearFields();
                     dispose();
                 }
             });
+            
             /*
              * Event on Connect button
              */
             ConnectButton.addActionListener(new AbstractAction() {
-
                 @Override
                 public void actionPerformed(ActionEvent ae) {
-             /*
-             * Calling a procedure for establish connection 
-             */
-            SetConnection();
-                }
+                    
+                    try{
+                        String server = "oracle11.avalon.ru"; //serverTxt.getText().toString();//"oracle11.avalon.ru"
+                        String sid = "ORCL";//sidTxt.getText().toUpperCase().toString();//"ORCL";
+                        int port = Integer.decode("1521");//portTxt.getText().toString();//"1521";
+                        String url = "jdbc:oracle:thin:@" + server + ":" + port + ":" + sid;
+                        
+                        //username = "andgavr";//usernameTxt.getText().toString();//"andgavr";
+                        //password = "andgavr";//new String(passwordTxt.getPassword());//"andgavr";
+                        
+                        connection = CreateConnection(usernameTxt.getText(),
+                                                      new String(passwordTxt.getPassword()),
+                                                      url);
+                    }catch (ClassNotFoundException e){
+                        Connection_error_txt.setText("ClassNotFoundException: " + e.getMessage());
+                        isConnected = false;
+                        Status_connection_txt.setBackground(Color.RED);
+                        Status_connection_txt.setText("Failed");
+                        conn_res_txt.setText("");
+                    }
+                }    
             });
             
             OkButton.addActionListener(new AbstractAction() {
@@ -251,6 +257,27 @@ public class OracleNoSQLConverter {
                         OracleNoSQLConverter.statusTxt.setText("Not connected");
                         OracleNoSQLConverter.statusTxt.setBackground(Color.red);
                         OracleNoSQLConverter.connectedUrltxt.setText(conn_res_txt.getText());
+                    }
+                    try{
+                        Statement stmnt1 = connection.createStatement();
+                        stmnt1.executeQuery("Select table_name from all_tables " + 
+                                "where tablespace_name = 'SYSTEM' ");
+                        
+                        ResultSet DatabaseResultSet = stmnt1.getResultSet();
+                        
+                        int k = DatabaseResultSet.getMetaData().getColumnCount();
+                        
+                        while (DatabaseResultSet.next()){
+                            for (int i = 1; i<=k;i++){
+                                tablesArray.add(DatabaseResultSet.getString(i));
+                                System.out.println(DatabaseResultSet.getString(i));
+                            }
+                        }
+                        stmnt1.close();
+                    }
+                    catch (SQLException e)
+                    {
+                        
                     }
                     dispose();
                 }
@@ -274,10 +301,7 @@ public class OracleNoSQLConverter {
             sidTxt.setToolTipText("SID of your DB");
             
             setContentPane(ConnectionPanel);
-            setLocationRelativeTo(null);
-
-            //pack();
-            
+            setLocationRelativeTo(null);            
         }
         
     }
