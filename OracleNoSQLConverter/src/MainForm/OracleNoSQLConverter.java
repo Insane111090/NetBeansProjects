@@ -26,6 +26,7 @@ public class OracleNoSQLConverter {
     static final String[] tstr = {""};
     static JList listOfTables = new JList(tstr);//List of result tables from Database
     static JScrollPane scrollPane = new JScrollPane();
+    static final JTextField countTablesLbl = new JTextField();
     /**
      * @param args the command line arguments
      */
@@ -44,6 +45,7 @@ public class OracleNoSQLConverter {
          */
         final JLabel connStatus = new JLabel("Status: ");//Connection status Label in MainForm
         final JLabel urlconn = new JLabel("URL:");
+        countTablesLbl.setVisible(false);
         
         connectedUrltxt.setEditable(false);
         
@@ -88,7 +90,8 @@ public class OracleNoSQLConverter {
         ConnectionSettings.add(openConnectionSetup,"wrap");
         
         scrollPane.getViewport().setView(listOfTables);
-        resultTables.add(scrollPane,"w 100:200:300, h 300");
+        resultTables.add(scrollPane,"w 100:200:300, h 300,wrap");
+        resultTables.add(countTablesLbl,"w 50");
         
         mainPanel.add(ConnectionSettings, "wrap, dock north");        
         mainPanel.add(resultTables,"wrap");
@@ -268,14 +271,22 @@ public class OracleNoSQLConverter {
                         OracleNoSQLConverter.connectedUrltxt.setText(conn_res_txt.getText());
                     }
                     try{
-                        Statement stmnt1 = connection.createStatement();
-                        stmnt1.executeQuery("Select table_name from all_tables " + 
-                                "where tablespace_name not like 'SYS%' and owner='ANDGAVR'");
+                        Statement statementForTables = connection.createStatement();
+                        Statement statementCountTables = connection.createStatement();
                         
-                        ResultSet DatabaseResultSet = stmnt1.getResultSet();
+                        statementForTables.executeQuery("Select table_name from all_tables " + 
+                                                        "where not regexp_like(tablespace_name,'SYS.+') " +
+                                                        "and owner=upper('andgavr')");
+                        statementCountTables.executeQuery("Select count(*) from " + 
+                                                          "(Select table_name from all_tables " + 
+                                                          "where not regexp_like(tablespace_name,'SYS.+') " +
+                                                          "and owner=upper('andgavr'))");
+                        
+                        ResultSet DatabaseResultSet = statementForTables.getResultSet();
+                        ResultSet countset = statementCountTables.getResultSet();
                         
                         int k = DatabaseResultSet.getMetaData().getColumnCount();
-                        
+                        countTablesLbl.setVisible(true);
                         while (DatabaseResultSet.next()){
                             for (int i = 1; i<=k;i++){
                                 tablesArray.add(DatabaseResultSet.getString(i));
@@ -283,7 +294,13 @@ public class OracleNoSQLConverter {
                                 System.out.println(DatabaseResultSet.getString(i));
                             }
                         }
-                        stmnt1.close();
+                        while (countset.next()){
+                            for (int i = 1; i<=countset.getMetaData().getColumnCount();i++){
+                            countTablesLbl.setText(countset.getString(i));
+                        }
+                        }
+                        statementForTables.close();
+                        statementCountTables.close();
                     }
                     catch (SQLException e)
                     {
@@ -313,6 +330,5 @@ public class OracleNoSQLConverter {
             setContentPane(ConnectionPanel);
             setLocationRelativeTo(null);            
         }
-        
     }
 }
