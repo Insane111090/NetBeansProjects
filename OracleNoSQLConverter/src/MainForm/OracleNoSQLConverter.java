@@ -96,7 +96,7 @@ public class OracleNoSQLConverter {
         
         mainForm.setTitle("MainForm");
         mainForm.setVisible(true);
-       // mainForm.setResizable(false);
+        mainForm.setResizable(false);
         mainForm.setSize(500, 500);
         mainForm.setContentPane(mainPanel);
         mainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
