@@ -22,18 +22,26 @@ public class OracleNoSQLConverter {
     static final ConnectionToDBDialog connectionSetupDialoge = new ConnectionToDBDialog();
     static String driverName = "oracle.jdbc.driver.OracleDriver";
     static Connection connection;
-    static ArrayList<String> tablesArray = new ArrayList<>();
-    static JList listOfTables = new JList(tablesArray.toArray());//List of result tables from Database
+    static final ArrayList<String> tablesArray = new ArrayList<>();
+    static final String[] tstr = {""};
+    static JList listOfTables = new JList(tstr);//List of result tables from Database
+    static JScrollPane scrollPane = new JScrollPane();
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         ConnectionSettings.setBorder(new TitledBorder("Настройка подключения к БД"));
         resultTables.setBorder(new TitledBorder("Список таблиц"));
-
+        
+        /*
+         * Connection button
+         */
         final JButton openConnectionSetup = new JButton("Configure connection");//Button pressed for configure connection
         openConnectionSetup.setToolTipText("Press for enter connection setup");//ToolTip for button
         
+        /*
+         * Labels on mainForm
+         */
         final JLabel connStatus = new JLabel("Status: ");//Connection status Label in MainForm
         final JLabel urlconn = new JLabel("URL:");
         
@@ -79,10 +87,11 @@ public class OracleNoSQLConverter {
         ConnectionSettings.add(connectedUrltxt, "wrap 10, w :500:800, gapleft 20");
         ConnectionSettings.add(openConnectionSetup,"wrap");
         
-        resultTables.add(listOfTables,"w :500:,h :300:, wrap 50");
+        scrollPane.getViewport().setView(listOfTables);
+        resultTables.add(scrollPane,"w 100:200:300, h 300");
         
         mainPanel.add(ConnectionSettings, "wrap, dock north");        
-        mainPanel.add(resultTables,"wrap 270,w :300:");
+        mainPanel.add(resultTables,"wrap");
         mainPanel.add(exitApplic,"align right, gapright 20");
         
         mainForm.setTitle("MainForm");
@@ -261,7 +270,7 @@ public class OracleNoSQLConverter {
                     try{
                         Statement stmnt1 = connection.createStatement();
                         stmnt1.executeQuery("Select table_name from all_tables " + 
-                                "where tablespace_name = 'SYSTEM' ");
+                                "where tablespace_name not like 'SYS%' and owner='ANDGAVR'");
                         
                         ResultSet DatabaseResultSet = stmnt1.getResultSet();
                         
@@ -270,6 +279,7 @@ public class OracleNoSQLConverter {
                         while (DatabaseResultSet.next()){
                             for (int i = 1; i<=k;i++){
                                 tablesArray.add(DatabaseResultSet.getString(i));
+                                listOfTables.setListData(tablesArray.toArray());
                                 System.out.println(DatabaseResultSet.getString(i));
                             }
                         }
