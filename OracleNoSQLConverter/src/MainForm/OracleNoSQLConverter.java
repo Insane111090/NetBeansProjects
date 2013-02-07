@@ -135,7 +135,7 @@ public class OracleNoSQLConverter {
         public static boolean isConnected;//boolean flag
 
         /*
-         * Procedure for cleaning textFields on JDialoge
+         * Procedure for cleaning textFields on connectionto DB form
          */
         public static void ClearFields() {
             serverTxt.setText("");
@@ -150,7 +150,7 @@ public class OracleNoSQLConverter {
         }
 
         /*
-         * Function wich creates a connection to DB
+         * Function that provides a connection to DB
          */
         public static Connection CreateConnection(String username,
                 String password,
@@ -179,9 +179,14 @@ public class OracleNoSQLConverter {
             }
             return connection;
         }
-
-        ConnectionToDBDialog() {
-            super(mainForm);//calls mainForm constructor
+        
+        /*
+         * Function, that creates a connection to DB Form GUI
+         */
+        public void createFormGUI(JButton ConnectButton, 
+                                  JButton OkButton, 
+                                  JButton CancelButton)
+        {
             final JPanel ConnectionPanel = new JPanel(new MigLayout());
             final JPanel InputServerPanel = new JPanel(new MigLayout());
             final JPanel InputUserPanel = new JPanel(new MigLayout());
@@ -192,14 +197,12 @@ public class OracleNoSQLConverter {
             final JLabel passwordLbl = new JLabel("Password: ");
             final JLabel Error = new JLabel("Error: ");
             final JLabel stat = new JLabel("Status: ");
-            final JButton ConnectButton = new JButton("Connect");//Button for connection
-            final JButton OkButton = new JButton("Ok");
-            final JButton CancelButton = new JButton("Cancel");//Exit button
+            
 
             setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
             /*
-             * Adding atributes on connectionToDB panel
+             * Adding atributes on connectionToDB form
              */
             InputUserPanel.setBorder(new TitledBorder("Username and password settings"));
             InputUserPanel.add(usernameLbl, "split");
@@ -224,11 +227,46 @@ public class OracleNoSQLConverter {
             ConnectionPanel.add(Error, "split");
             ConnectionPanel.add(Connection_error_txt, "wrap 24, w :1200:,gapleft 12");
             ConnectionPanel.add(OkButton, "split,align right");
-            ConnectionPanel.add(CancelButton);
+            ConnectionPanel.add(CancelButton); 
+            
+            /*
+             * Editable fields on Connection form
+             */
+            Status_connection_txt.setEditable(false);
+            conn_res_txt.setEditable(false);
+            Connection_error_txt.setEditable(false);
+            
+            /*
+             * ToolTips for buttons and fields on connection form
+             */
+            OkButton.setToolTipText("OK");
+            CancelButton.setToolTipText("Cancel");
+            ConnectButton.setToolTipText("Press for set connection to DB");
+            usernameTxt.setToolTipText("Enter your username or login");
+            passwordTxt.setToolTipText("Enter your password");
+            serverTxt.setToolTipText("Address(link) of DB server");
+            portTxt.setToolTipText("Port for DB connection");
+            sidTxt.setToolTipText("SID of your DB");
+            
+            setContentPane(ConnectionPanel);
+            setLocationRelativeTo(null);
+        }
+        
+        //main
+        ConnectionToDBDialog() {
+            super(mainForm);//calls mainForm constructor
+            final JButton ConnectButton = new JButton("Connect");//Button for connection
+            final JButton OkButton = new JButton("Ok");
+            final JButton CancelButton = new JButton("Cancel");//Exit button
+            
+            createFormGUI(ConnectButton, 
+                          OkButton, 
+                          CancelButton);
 
             /*
-             * Event for cancel button (dispose the form)
+             * Button click events
              */
+            //Cancel button
             CancelButton.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -236,10 +274,7 @@ public class OracleNoSQLConverter {
                     dispose();
                 }
             });
-
-            /*
-             * Event on Connect button
-             */
+            //Connect button(establish connection)
             ConnectButton.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -265,7 +300,7 @@ public class OracleNoSQLConverter {
                     }
                 }
             });
-
+            //Ok Button (Confirm)
             OkButton.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
@@ -302,30 +337,11 @@ public class OracleNoSQLConverter {
                     } catch (SQLException e) {
                         System.out.println(e.getErrorCode() + " " + e.getMessage());
                     }
-                    tablesArray.clear();
+                    tablesArray.clear();//crear Array List after using
                     dispose();
                 }
             });
-            /*
-             * Editable fields
-             */
-            Status_connection_txt.setEditable(false);
-            conn_res_txt.setEditable(false);
-            Connection_error_txt.setEditable(false);
-            /*
-             * ToolTips for buttons and fields
-             */
-            OkButton.setToolTipText("OK");
-            CancelButton.setToolTipText("Cancel");
-            ConnectButton.setToolTipText("Press for set connection to DB");
-            usernameTxt.setToolTipText("Enter your username or login");
-            passwordTxt.setToolTipText("Enter your password");
-            serverTxt.setToolTipText("Address(link) of DB server");
-            portTxt.setToolTipText("Port for DB connection");
-            sidTxt.setToolTipText("SID of your DB");
-
-            setContentPane(ConnectionPanel);
-            setLocationRelativeTo(null);
+           
         }
     }
 }
