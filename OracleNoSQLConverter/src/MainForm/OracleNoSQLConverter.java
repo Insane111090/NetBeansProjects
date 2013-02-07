@@ -26,7 +26,7 @@ public class OracleNoSQLConverter {
     static final String[] tstr = {""};
     static JList listOfTables = new JList(tstr);//List of result tables from Database
     static JScrollPane scrollPane = new JScrollPane();
-    static final JTextField countTablesLbl = new JTextField();
+    static final JTextField countTablesTxt = new JTextField();
     /**
      * @param args the command line arguments
      */
@@ -45,7 +45,12 @@ public class OracleNoSQLConverter {
          */
         final JLabel connStatus = new JLabel("Status: ");//Connection status Label in MainForm
         final JLabel urlconn = new JLabel("URL:");
-        countTablesLbl.setVisible(false);
+        
+        /*
+         * Text fields on MainForm
+         */
+        countTablesTxt.setVisible(false);
+        countTablesTxt.setEditable(false);
         
         connectedUrltxt.setEditable(false);
         
@@ -91,7 +96,7 @@ public class OracleNoSQLConverter {
         
         scrollPane.getViewport().setView(listOfTables);
         resultTables.add(scrollPane,"w 100:200:300, h 300,wrap");
-        resultTables.add(countTablesLbl,"w 50");
+        resultTables.add(countTablesTxt,"w 100:200");
         
         mainPanel.add(ConnectionSettings, "wrap, dock north");        
         mainPanel.add(resultTables,"wrap");
@@ -257,9 +262,8 @@ public class OracleNoSQLConverter {
             });
             
             OkButton.addActionListener(new AbstractAction() {
-
-                @Override
-                public void actionPerformed(ActionEvent ae) {
+                @Override 
+                public void actionPerformed(ActionEvent ae) throws SQLException{
                     if (isConnected){
                         OracleNoSQLConverter.statusTxt.setText("Connected");
                         OracleNoSQLConverter.statusTxt.setBackground(Color.green);
@@ -270,51 +274,40 @@ public class OracleNoSQLConverter {
                         OracleNoSQLConverter.statusTxt.setBackground(Color.red);
                         OracleNoSQLConverter.connectedUrltxt.setText(conn_res_txt.getText());
                     }
-                    try{
-                        PreparedStatement statementForTables = connection.prepareStatement("Select table_name,owner from all_tables " + 
-                                                        "where not regexp_like(tablespace_name,'SYS.+') " +
-                                                        "and owner=upper('andgavr')");
+                    
+                        PreparedStatement statementForTables = connection.prepareStatement("Select table_name from all_tables " + 
+                                                                                           "where not regexp_like(tablespace_name,'SYS.+') " +
+                                                                                           "and owner=upper('andgavr')");
+                        
                         Statement statementCountTables = connection.createStatement();
                         
                         
-//                        statementForTables.executeQuery("Select table_name,owner from all_tables " + 
-//                                                        "where not regexp_like(tablespace_name,'SYS.+') " +
-//                                                        "and owner=upper('andgavr')");
                         statementCountTables.executeQuery("Select count(*) from " + 
                                                           "(Select table_name from all_tables " + 
                                                           "where not regexp_like(tablespace_name,'SYS.+') " +
                                                           "and owner=upper('andgavr'))");
-                        
-                        
+                         
                         ResultSet DatabaseResultSet = statementForTables.executeQuery();
                         ResultSet countset = statementCountTables.getResultSet();
-                        
                         int k = DatabaseResultSet.getMetaData().getColumnCount();
-                        countTablesLbl.setVisible(true);
+                        
                         while (DatabaseResultSet.next()){
-//                            String key = DatabaseResultSet.getString(1);
-//                            String value = DatabaseResultSet.getString(2);
-//                            
-//                            System.out.println("key= "+key);
-//                            System.out.println("val= "+value);
                             for (int i = 1; i<=k;i++){
                                 tablesArray.add(DatabaseResultSet.getString(i));
                                 listOfTables.setListData(tablesArray.toArray());
                                 System.out.println(DatabaseResultSet.getString(i));
                             }
                         }
-                        while (countset.next()){
-                            for (int i = 1; i<=countset.getMetaData().getColumnCount();i++){
-                            countTablesLbl.setText(countset.getString(i));
-                        }
-                        }
                         statementForTables.close();
-                        statementCountTables.close();
-                    }
-                    catch (SQLException e)
-                    {
+                        while (countset.next()){
+                            String value = countset.getString(1);
+                            countTablesTxt.setVisible(true);
+                            countTablesTxt.setText("Count of tables: " + value);
                         
-                    }
+                        }
+                        
+                        statementCountTables.close();
+                    
                     dispose();
                 }
             });
