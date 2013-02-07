@@ -31,9 +31,9 @@ public class OracleNoSQLConverter {
     /*
      * Procedure for making the Interface
      */
-    public static void createGUI(JLabel connStatus, JLabel urlconn, 
-                                 JButton openConnectionSetup, JButton exitApplic) {
-         /*
+    public static void createGUI(JLabel connStatus, JLabel urlconn,
+            JButton openConnectionSetup, JButton exitApplic) {
+        /*
          * Adding elements on MainForm window
          */
         ConnectionSettings.add(connStatus, "split");
@@ -115,12 +115,12 @@ public class OracleNoSQLConverter {
                 System.exit(0);
             }
         });
-            
+
         createGUI(connStatus, urlconn, openConnectionSetup, exitApplic);
     }
 
     /*
-     * Class for connection to Database, where user enter server, port, username and password
+     * Class for connection to Database, where user enters a server Name, port, username and password
      */
     public static final class ConnectionToDBDialog extends JDialog {
 
@@ -132,7 +132,7 @@ public class OracleNoSQLConverter {
         final static JTextField Status_connection_txt = new JTextField();//Field for connection status(Failed or not)
         final static JTextField conn_res_txt = new JTextField();//Field for connection url
         final static JTextArea Connection_error_txt = new JTextArea();//Connection error
-        public static boolean isConnected;
+        public static boolean isConnected;//boolean flag
 
         /*
          * Procedure for cleaning textFields on JDialoge
@@ -150,7 +150,7 @@ public class OracleNoSQLConverter {
         }
 
         /*
-         * Procedure wich creates a connection to DB
+         * Function wich creates a connection to DB
          */
         public static Connection CreateConnection(String username,
                 String password,
@@ -173,7 +173,7 @@ public class OracleNoSQLConverter {
             } else {
                 isConnected = true;
                 Connection_error_txt.setText("");
-                Status_connection_txt.setBackground(Color.green);
+                Status_connection_txt.setBackground(Color.GREEN);
                 Status_connection_txt.setText("Succeed");
                 conn_res_txt.setText("Connected to: " + url);
             }
@@ -253,8 +253,8 @@ public class OracleNoSQLConverter {
                         //username = "andgavr";//usernameTxt.getText().toString();//"andgavr";
                         //password = "andgavr";//new String(passwordTxt.getPassword());//"andgavr";
 
-                        connection = CreateConnection(usernameTxt.getText(),
-                                new String(passwordTxt.getPassword()),
+                        connection = CreateConnection("andgavr",//usernameTxt.getText(),
+                                "andgavr",//new String(passwordTxt.getPassword()),
                                 url);
                     } catch (ClassNotFoundException e) {
                         Connection_error_txt.setText("ClassNotFoundException: " + e.getMessage());
@@ -296,14 +296,13 @@ public class OracleNoSQLConverter {
                         }
                         statementForTables.close();
 
-                        int countOfSelectedTables = tablesArray.size();
-
                         countTablesTxt.setVisible(true);
-                        countTablesTxt.setText("Count of tables: " + countOfSelectedTables);
+                        countTablesTxt.setText("Count of tables: " + tablesArray.size());
 
                     } catch (SQLException e) {
                         System.out.println(e.getErrorCode() + " " + e.getMessage());
                     }
+                    tablesArray.clear();
                     dispose();
                 }
             });
