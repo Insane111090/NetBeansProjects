@@ -271,23 +271,32 @@ public class OracleNoSQLConverter {
                         OracleNoSQLConverter.connectedUrltxt.setText(conn_res_txt.getText());
                     }
                     try{
-                        Statement statementForTables = connection.createStatement();
-                        Statement statementCountTables = connection.createStatement();
-                        
-                        statementForTables.executeQuery("Select table_name from all_tables " + 
+                        PreparedStatement statementForTables = connection.prepareStatement("Select table_name,owner from all_tables " + 
                                                         "where not regexp_like(tablespace_name,'SYS.+') " +
                                                         "and owner=upper('andgavr')");
+                        Statement statementCountTables = connection.createStatement();
+                        
+                        
+//                        statementForTables.executeQuery("Select table_name,owner from all_tables " + 
+//                                                        "where not regexp_like(tablespace_name,'SYS.+') " +
+//                                                        "and owner=upper('andgavr')");
                         statementCountTables.executeQuery("Select count(*) from " + 
                                                           "(Select table_name from all_tables " + 
                                                           "where not regexp_like(tablespace_name,'SYS.+') " +
                                                           "and owner=upper('andgavr'))");
                         
-                        ResultSet DatabaseResultSet = statementForTables.getResultSet();
+                        
+                        ResultSet DatabaseResultSet = statementForTables.executeQuery();
                         ResultSet countset = statementCountTables.getResultSet();
                         
                         int k = DatabaseResultSet.getMetaData().getColumnCount();
                         countTablesLbl.setVisible(true);
                         while (DatabaseResultSet.next()){
+//                            String key = DatabaseResultSet.getString(1);
+//                            String value = DatabaseResultSet.getString(2);
+//                            
+//                            System.out.println("key= "+key);
+//                            System.out.println("val= "+value);
                             for (int i = 1; i<=k;i++){
                                 tablesArray.add(DatabaseResultSet.getString(i));
                                 listOfTables.setListData(tablesArray.toArray());
