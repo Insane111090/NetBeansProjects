@@ -26,13 +26,17 @@ public class OracleNoSQLConverter {
     static final String[] tstr = {""};
     static JList listOfTables = new JList(tstr);//List of result tables from Database
     static JScrollPane scrollPane = new JScrollPane();
+    static JLabel countTablesLbl = new JLabel("Count of tables: ");
     static final JTextField countTablesTxt = new JTextField();
 
     /*
      * Procedure for making the Interface
      */
-    public static void createGUI(JLabel connStatus, JLabel urlconn,
-            JButton openConnectionSetup, JButton exitApplic) {
+    public static void createGUI(JLabel connStatus,
+            JLabel urlconn,
+            JButton openConnectionSetup,
+            JButton exitApplic,
+            JButton getDdlOfSelectedTable_btn) {
         /*
          * Adding elements on MainForm window
          */
@@ -44,7 +48,9 @@ public class OracleNoSQLConverter {
 
         scrollPane.getViewport().setView(listOfTables);
         resultTables.add(scrollPane, "w 100:200:300, h 300,wrap");
-        resultTables.add(countTablesTxt, "w 100:200");
+        resultTables.add(countTablesLbl, "split");
+        resultTables.add(countTablesTxt, "w 20");
+        resultTables.add(getDdlOfSelectedTable_btn);
 
         mainPanel.add(ConnectionSettings, "wrap, dock north");
         mainPanel.add(resultTables, "wrap");
@@ -59,6 +65,35 @@ public class OracleNoSQLConverter {
         mainForm.setLocationRelativeTo(null);//Appears on the screen center
 
         connectionSetupDialoge.setModal(true);//Makes window modal  
+    }
+
+    public static void WarningDialoge(String warningTextIn) {
+        final JDialog warningDialoge = new JDialog();
+        final JPanel warningPanel = new JPanel(new MigLayout());
+        final JLabel warningText = new JLabel();
+        final JButton ok = new JButton("Ok");
+
+        warningText.setText(warningTextIn);
+
+        warningDialoge.setTitle("WARNING");
+
+        warningPanel.add(warningText, "wrap 20");
+        warningPanel.add(ok, "align center");
+
+        warningDialoge.add(warningPanel);
+        warningDialoge.setSize(190, 130);
+        warningDialoge.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        warningDialoge.setLocationRelativeTo(null);//Appears on the screen center
+        warningDialoge.setModal(true);//Makes window modal 
+        
+        ok.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                warningDialoge.dispose();
+            }
+        });
+        
+        warningDialoge.setVisible(true);
     }
 
     /**
@@ -79,6 +114,10 @@ public class OracleNoSQLConverter {
         final JButton exitApplic = new JButton("Exit");
         exitApplic.setToolTipText("Exit application");
 
+        //GetDdl button
+        final JButton getDdlOfSelectedTable_btn = new JButton("Get DDL");
+        getDdlOfSelectedTable_btn.setToolTipText("Press for view DDL of the selected table");
+
         /*
          * Labels on mainForm
          */
@@ -89,12 +128,15 @@ public class OracleNoSQLConverter {
          * Text fields on MainForm
          */
         countTablesTxt.setVisible(false);
+        countTablesTxt.setBorder(null);
         countTablesTxt.setEditable(false);
 
         connectedUrltxt.setEditable(false);
 
         statusTxt.setEditable(false);
         statusTxt.setBackground(Color.red);
+
+        createGUI(connStatus, urlconn, openConnectionSetup, exitApplic, getDdlOfSelectedTable_btn);
 
         /*
          * On buttons click event
@@ -115,8 +157,20 @@ public class OracleNoSQLConverter {
                 System.exit(0);
             }
         });
-
-        createGUI(connStatus, urlconn, openConnectionSetup, exitApplic);
+        //GetDDL button event
+        getDdlOfSelectedTable_btn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                int selectedTableIndex = listOfTables.getSelectedIndex();
+                boolean tableNotSelected = selectedTableIndex < 0;
+                if (tableNotSelected) {
+                    WarningDialoge("<html>You did not selet any table.<br>Please, select table first.</html>");
+                }
+                else{
+                    
+                }
+            }
+        });
     }
 
     /*
@@ -179,14 +233,13 @@ public class OracleNoSQLConverter {
             }
             return connection;
         }
-        
+
         /*
          * Function, that creates a connection to DB Form GUI
          */
-        public void createFormGUI(JButton ConnectButton, 
-                                  JButton OkButton, 
-                                  JButton CancelButton)
-        {
+        public void createFormGUI(JButton ConnectButton,
+                JButton OkButton,
+                JButton CancelButton) {
             final JPanel ConnectionPanel = new JPanel(new MigLayout());
             final JPanel InputServerPanel = new JPanel(new MigLayout());
             final JPanel InputUserPanel = new JPanel(new MigLayout());
@@ -197,7 +250,7 @@ public class OracleNoSQLConverter {
             final JLabel passwordLbl = new JLabel("Password: ");
             final JLabel Error = new JLabel("Error: ");
             final JLabel stat = new JLabel("Status: ");
-            
+
 
             setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
@@ -227,15 +280,15 @@ public class OracleNoSQLConverter {
             ConnectionPanel.add(Error, "split");
             ConnectionPanel.add(Connection_error_txt, "wrap 24, w :1200:,gapleft 12");
             ConnectionPanel.add(OkButton, "split,align right");
-            ConnectionPanel.add(CancelButton); 
-            
+            ConnectionPanel.add(CancelButton);
+
             /*
              * Editable fields on Connection form
              */
             Status_connection_txt.setEditable(false);
             conn_res_txt.setEditable(false);
             Connection_error_txt.setEditable(false);
-            
+
             /*
              * ToolTips for buttons and fields on connection form
              */
@@ -247,21 +300,21 @@ public class OracleNoSQLConverter {
             serverTxt.setToolTipText("Address(link) of DB server");
             portTxt.setToolTipText("Port for DB connection");
             sidTxt.setToolTipText("SID of your DB");
-            
+
             setContentPane(ConnectionPanel);
             setLocationRelativeTo(null);
         }
-        
+
         //main
         ConnectionToDBDialog() {
             super(mainForm);//calls mainForm constructor
             final JButton ConnectButton = new JButton("Connect");//Button for connection
             final JButton OkButton = new JButton("Ok");
             final JButton CancelButton = new JButton("Cancel");//Exit button
-            
-            createFormGUI(ConnectButton, 
-                          OkButton, 
-                          CancelButton);
+
+            createFormGUI(ConnectButton,
+                    OkButton,
+                    CancelButton);
 
             /*
              * Button click events
@@ -332,7 +385,7 @@ public class OracleNoSQLConverter {
                         statementForTables.close();
 
                         countTablesTxt.setVisible(true);
-                        countTablesTxt.setText("Count of tables: " + tablesArray.size());
+                        countTablesTxt.setText(String.valueOf(tablesArray.size()));
 
                     } catch (SQLException e) {
                         System.out.println(e.getErrorCode() + " " + e.getMessage());
@@ -341,7 +394,7 @@ public class OracleNoSQLConverter {
                     dispose();
                 }
             });
-           
+
         }
     }
 }
