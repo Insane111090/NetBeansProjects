@@ -373,14 +373,10 @@ public class OracleNoSQLConverter {
 
                         ResultSet DatabaseResultSet = statementForTables.executeQuery();
 
-                        int colsCount = DatabaseResultSet.getMetaData().getColumnCount();
-
                         while (DatabaseResultSet.next()) {
-                            for (int i = 1; i <= colsCount; i++) {
-                                tablesArray.add(DatabaseResultSet.getString(i));
+                                tablesArray.add(DatabaseResultSet.getString(1));
                                 listOfTables.setListData(tablesArray.toArray());
-                                System.out.println(DatabaseResultSet.getString(i));
-                            }
+                                System.out.println(DatabaseResultSet.getString(1));
                         }
                         statementForTables.close();
 
