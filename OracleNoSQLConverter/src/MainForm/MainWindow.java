@@ -2,8 +2,7 @@ package MainForm;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
@@ -11,7 +10,7 @@ import net.miginfocom.swing.MigLayout;
 /**
  * @author agavrilov
  */
-public class OracleNoSQLConverter {
+public class MainWindow {
 
     static final JFrame mainForm = new JFrame();
     static final JPanel mainPanel = new JPanel(new MigLayout());
@@ -20,9 +19,6 @@ public class OracleNoSQLConverter {
     static public JTextField statusTxt = new JTextField("Not connected");
     static public JTextField connectedUrltxt = new JTextField();
     static final ConnectionToDBDialog connectionSetupDialoge = new ConnectionToDBDialog();
-    static String driverName = "oracle.jdbc.driver.OracleDriver";
-    static Connection connection;
-    static final ArrayList<String> tablesArray = new ArrayList<>();
     static final String[] tstr = {""};
     static JList listOfTables = new JList(tstr);//List of result tables from Database
     static JScrollPane scrollPane = new JScrollPane();
@@ -85,14 +81,14 @@ public class OracleNoSQLConverter {
         warningDialoge.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         warningDialoge.setLocationRelativeTo(null);//Appears on the screen center
         warningDialoge.setModal(true);//Makes window modal 
-        
+
         ok.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 warningDialoge.dispose();
             }
         });
-        
+
         warningDialoge.setVisible(true);
     }
 
@@ -165,9 +161,10 @@ public class OracleNoSQLConverter {
                 boolean tableNotSelected = selectedTableIndex < 0;
                 if (tableNotSelected) {
                     WarningDialoge("<html>You did not selet any table.<br>Please, select table first.</html>");
-                }
-                else{
-                    
+                } else {
+                    String selectedTableName = listOfTables.getSelectedValue().toString();
+                    System.out.println(selectedTableName);
+
                 }
             }
         });
@@ -191,7 +188,7 @@ public class OracleNoSQLConverter {
         /*
          * Procedure for cleaning textFields on connectionto DB form
          */
-        public static void ClearFields() {
+        public static void clearFields() {
             serverTxt.setText("");
             portTxt.setText("");
             sidTxt.setText("");
@@ -201,37 +198,6 @@ public class OracleNoSQLConverter {
             conn_res_txt.setText("");
             Connection_error_txt.setText("");
             Status_connection_txt.setBackground(Color.WHITE);
-        }
-
-        /*
-         * Function that provides a connection to DB
-         */
-        public static Connection CreateConnection(String username,
-                String password,
-                String url) throws ClassNotFoundException {
-            Class.forName(driverName);
-            try {
-                connection = DriverManager.getConnection(url, username, password);
-            } catch (SQLException e) {
-                Connection_error_txt.setText("SQL Error: " + e.getErrorCode() + "; " + e.getMessage());
-                isConnected = false;
-                Status_connection_txt.setBackground(Color.RED);
-                Status_connection_txt.setText("Failed");
-                conn_res_txt.setText("");
-            }
-            if (connection == null) {
-                isConnected = false;
-                Status_connection_txt.setBackground(Color.RED);
-                Status_connection_txt.setText("Failed");
-                conn_res_txt.setText("");
-            } else {
-                isConnected = true;
-                Connection_error_txt.setText("");
-                Status_connection_txt.setBackground(Color.GREEN);
-                Status_connection_txt.setText("Succeed");
-                conn_res_txt.setText("Connected to: " + url);
-            }
-            return connection;
         }
 
         /*
@@ -323,7 +289,7 @@ public class OracleNoSQLConverter {
             CancelButton.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
-                    ClearFields();
+                    clearFields();
                     dispose();
                 }
             });
@@ -331,7 +297,6 @@ public class OracleNoSQLConverter {
             ConnectButton.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
-
                     try {
                         String server = "oracle11.avalon.ru"; //serverTxt.getText().toString();//"oracle11.avalon.ru"
                         String sid = "ORCL";//sidTxt.getText().toUpperCase().toString();//"ORCL";
@@ -341,7 +306,7 @@ public class OracleNoSQLConverter {
                         //username = "andgavr";//usernameTxt.getText().toString();//"andgavr";
                         //password = "andgavr";//new String(passwordTxt.getPassword());//"andgavr";
 
-                        connection = CreateConnection("andgavr",//usernameTxt.getText(),
+                        DataBase.createConnection("andgavr",//usernameTxt.getText(),
                                 "andgavr",//new String(passwordTxt.getPassword()),
                                 url);
                     } catch (ClassNotFoundException e) {
@@ -357,37 +322,24 @@ public class OracleNoSQLConverter {
             OkButton.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
-                    if (isConnected) {
-                        OracleNoSQLConverter.statusTxt.setText("Connected");
-                        OracleNoSQLConverter.statusTxt.setBackground(Color.green);
-                        OracleNoSQLConverter.connectedUrltxt.setText(conn_res_txt.getText());
-                    } else {
-                        OracleNoSQLConverter.statusTxt.setText("Not connected");
-                        OracleNoSQLConverter.statusTxt.setBackground(Color.red);
-                        OracleNoSQLConverter.connectedUrltxt.setText(conn_res_txt.getText());
-                    }
                     try {
-                        PreparedStatement statementForTables = connection.prepareStatement("Select table_name from all_tables "
-                                + "where not regexp_like(tablespace_name,'SYS.+') "
-                                + "and owner=upper('andgavr')");
-
-                        ResultSet DatabaseResultSet = statementForTables.executeQuery();
-
-                        while (DatabaseResultSet.next()) {
-                                tablesArray.add(DatabaseResultSet.getString(1));
-                                listOfTables.setListData(tablesArray.toArray());
-                                System.out.println(DatabaseResultSet.getString(1));
+                        if (DataBase.isConnect()) {
+                            MainWindow.statusTxt.setText("Connected");
+                            MainWindow.statusTxt.setBackground(Color.green);
+                            MainWindow.connectedUrltxt.setText(conn_res_txt.getText());
+                        } else {
+                            MainWindow.statusTxt.setText("Not connected");
+                            MainWindow.statusTxt.setBackground(Color.red);
+                            MainWindow.connectedUrltxt.setText(conn_res_txt.getText());
                         }
-                        statementForTables.close();
-
+                        listOfTables.setListData(DataBase.getTableList().toArray());
                         countTablesTxt.setVisible(true);
-                        countTablesTxt.setText(String.valueOf(tablesArray.size()));
+                        countTablesTxt.setText(String.valueOf(DataBase.tablesArray.size()));
 
-                    } catch (SQLException e) {
-                        System.out.println(e.getErrorCode() + " " + e.getMessage());
+                        DataBase.clearArrayList();
+                        dispose();
+                    } catch (SQLException ex) {
                     }
-                    tablesArray.clear();//crear Array List after using
-                    dispose();
                 }
             });
 
