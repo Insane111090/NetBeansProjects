@@ -15,7 +15,7 @@ public class MainWindow {
     static final JPanel resultTables = new MigPanel();
     static public JTextField statusTxt = new JTextField("Not connected");
     static public JTextField connectedUrlTxt = new JTextField();
-    static final ConnectionToDBDialog connectionSetupDialog = new ConnectionToDBDialog();
+    static final ConnectionConfigDialog connectionSetupDialog = new ConnectionConfigDialog();
     static final String[] tstr = {""};
     static JList listOfTables = new JList(tstr);//List of result tables from Database
     static JScrollPane scrollPane = new JScrollPane();
@@ -118,6 +118,7 @@ public class MainWindow {
                 System.exit(0);
             }
         });
+
         //GetDDL button event
         getDdlOfSelectedTable_btn.addActionListener(new AbstractAction() {
             @Override
@@ -142,7 +143,7 @@ public class MainWindow {
     /*
      * Class for connection to Database, where user enters a server Name, port, username and password
      */
-    public static final class ConnectionToDBDialog extends JDialog {
+    public static final class ConnectionConfigDialog extends JDialog {
 
         final static JTextField serverTxt = new JTextField();//Field for server input
         final static JTextField portTxt = new JTextField();//Field for port input
@@ -240,7 +241,7 @@ public class MainWindow {
         }
 
         //main
-        ConnectionToDBDialog() {
+        ConnectionConfigDialog() {
             super(mainForm);//calls mainForm constructor
             final JButton ConnectButton = new JButton("Connect");//Button for connection
             final JButton OkButton = new JButton("Ok");

@@ -22,23 +22,23 @@ public class DatabaseWrapper {
         try {
             MyConnection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            MainWindow.ConnectionToDBDialog.Connection_error_txt.setText("SQL Error: " + e.getErrorCode() + "; " + e.getMessage());
+            MainWindow.ConnectionConfigDialog.Connection_error_txt.setText("SQL Error: " + e.getErrorCode() + "; " + e.getMessage());
             _isConnected = false;
-            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setBackground(Color.RED);
-            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setText("Failed");
-            MainWindow.ConnectionToDBDialog.connectionUrlLabel.setText("");
+            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setBackground(Color.RED);
+            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setText("Failed");
+            MainWindow.ConnectionConfigDialog.connectionUrlLabel.setText("");
         }
         if (MyConnection == null) {
             _isConnected = false;
-            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setBackground(Color.RED);
-            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setText("Failed");
-            MainWindow.ConnectionToDBDialog.connectionUrlLabel.setText("");
+            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setBackground(Color.RED);
+            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setText("Failed");
+            MainWindow.ConnectionConfigDialog.connectionUrlLabel.setText("");
         } else {
               _isConnected = true;
-            MainWindow.ConnectionToDBDialog.Connection_error_txt.setText("");
-            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setBackground(Color.GREEN);
-            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setText("Succeed");
-            MainWindow.ConnectionToDBDialog.connectionUrlLabel.setText("Connected to: " + url);
+            MainWindow.ConnectionConfigDialog.Connection_error_txt.setText("");
+            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setBackground(Color.GREEN);
+            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setText("Succeed");
+            MainWindow.ConnectionConfigDialog.connectionUrlLabel.setText("Connected to: " + url);
         }
         return MyConnection;
     }
