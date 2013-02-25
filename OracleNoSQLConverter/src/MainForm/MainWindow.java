@@ -17,8 +17,8 @@ public class MainWindow {
     static final JPanel ConnectionSettings = new JPanel(new MigLayout());
     static final JPanel resultTables = new JPanel(new MigLayout());
     static public JTextField statusTxt = new JTextField("Not connected");
-    static public JTextField connectedUrltxt = new JTextField();
-    static final ConnectionToDBDialog connectionSetupDialoge = new ConnectionToDBDialog();
+    static public JTextField connectedUrlTxt = new JTextField();
+    static final ConnectionToDBDialog connectionSetupDialog = new ConnectionToDBDialog();
     static final String[] tstr = {""};
     static JList listOfTables = new JList(tstr);//List of result tables from Database
     static JScrollPane scrollPane = new JScrollPane();
@@ -39,7 +39,7 @@ public class MainWindow {
         ConnectionSettings.add(connStatus, "split");
         ConnectionSettings.add(statusTxt, "wrap 10, w :100:300");//wrap to the next row
         ConnectionSettings.add(urlconn, "split");
-        ConnectionSettings.add(connectedUrltxt, "wrap 10, w :500:800, gapleft 20");
+        ConnectionSettings.add(connectedUrlTxt, "wrap 10, w :500:800, gapleft 20");
         ConnectionSettings.add(openConnectionSetup, "wrap");
 
         scrollPane.getViewport().setView(listOfTables);
@@ -60,36 +60,32 @@ public class MainWindow {
         mainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainForm.setLocationRelativeTo(null);//Appears on the screen center
 
-        connectionSetupDialoge.setModal(true);//Makes window modal  
+        connectionSetupDialog.setModal(true);//Makes window modal
     }
 
-    public static void WarningDialoge(String warningTextIn) {
-        final JDialog warningDialoge = new JDialog();
-        final JPanel warningPanel = new JPanel(new MigLayout());
-        final JLabel warningText = new JLabel();
-        final JButton ok = new JButton("Ok");
+    public static JDialog createWarningDialog(String message) {
+        final JDialog warningDialog = new JDialog();
+        JPanel warningPanel = new JPanel(new MigLayout());
+        JButton ok = new JButton("Ok");
 
-        warningText.setText(warningTextIn);
+        warningDialog.setTitle("WARNING");
 
-        warningDialoge.setTitle("WARNING");
-
-        warningPanel.add(warningText, "wrap 20");
+        warningPanel.add(new JLabel(message), "wrap 20");
         warningPanel.add(ok, "align center");
+        warningDialog.add(warningPanel);
 
-        warningDialoge.add(warningPanel);
-        warningDialoge.setSize(190, 130);
-        warningDialoge.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        warningDialoge.setLocationRelativeTo(null);//Appears on the screen center
-        warningDialoge.setModal(true);//Makes window modal 
+        warningDialog.setSize(190, 130);
+        warningDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        warningDialog.setLocationRelativeTo(null);//Appears on the screen center
+        warningDialog.setModal(true);//Makes window modal
 
         ok.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                warningDialoge.dispose();
+                warningDialog.dispose();
             }
         });
-
-        warningDialoge.setVisible(true);
+        return warningDialog;
     }
 
     /**
@@ -127,7 +123,7 @@ public class MainWindow {
         countTablesTxt.setBorder(null);
         countTablesTxt.setEditable(false);
 
-        connectedUrltxt.setEditable(false);
+        connectedUrlTxt.setEditable(false);
 
         statusTxt.setEditable(false);
         statusTxt.setBackground(Color.red);
@@ -141,9 +137,9 @@ public class MainWindow {
         openConnectionSetup.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                connectionSetupDialoge.setTitle("Connection settings");
-                connectionSetupDialoge.setSize(550, 350);
-                connectionSetupDialoge.setVisible(true);
+                connectionSetupDialog.setTitle("Connection settings");
+                connectionSetupDialog.setSize(550, 350);
+                connectionSetupDialog.setVisible(true);
             }
         });
         //Exit button event
@@ -160,11 +156,11 @@ public class MainWindow {
                 int selectedTableIndex = listOfTables.getSelectedIndex();
                 boolean tableNotSelected = selectedTableIndex < 0;
                 if (tableNotSelected) {
-                    WarningDialoge("<html>You did not selet any table.<br>Please, select table first.</html>");
+                    JDialog warningDialog = createWarningDialog("<html>You did not selected any table.<br>Please, select table first.</html>");
+                    warningDialog.setVisible(true);
                 } else {
                     String selectedTableName = listOfTables.getSelectedValue().toString();
                     System.out.println(selectedTableName);
-
                 }
             }
         });
@@ -306,7 +302,7 @@ public class MainWindow {
                         //username = "andgavr";//usernameTxt.getText().toString();//"andgavr";
                         //password = "andgavr";//new String(passwordTxt.getPassword());//"andgavr";
 
-                        DataBase.createConnection("andgavr",//usernameTxt.getText(),
+                        DatabaseWrapper.createConnection("andgavr",//usernameTxt.getText(),
                                 "andgavr",//new String(passwordTxt.getPassword()),
                                 url);
                     } catch (ClassNotFoundException e) {
@@ -323,20 +319,20 @@ public class MainWindow {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
-                        if (DataBase.isConnect()) {
+                        if (DatabaseWrapper.isConnect()) {
                             MainWindow.statusTxt.setText("Connected");
                             MainWindow.statusTxt.setBackground(Color.green);
-                            MainWindow.connectedUrltxt.setText(conn_res_txt.getText());
+                            MainWindow.connectedUrlTxt.setText(conn_res_txt.getText());
                         } else {
                             MainWindow.statusTxt.setText("Not connected");
                             MainWindow.statusTxt.setBackground(Color.red);
-                            MainWindow.connectedUrltxt.setText(conn_res_txt.getText());
+                            MainWindow.connectedUrlTxt.setText(conn_res_txt.getText());
                         }
-                        listOfTables.setListData(DataBase.getTableList().toArray());
+                        listOfTables.setListData(DatabaseWrapper.getTableList().toArray());
                         countTablesTxt.setVisible(true);
-                        countTablesTxt.setText(String.valueOf(DataBase.tablesArray.size()));
+                        countTablesTxt.setText(String.valueOf(DatabaseWrapper.tables.size()));
 
-                        DataBase.clearArrayList();
+                        DatabaseWrapper.clearArrayList();
                         dispose();
                     } catch (SQLException ex) {
                     }
