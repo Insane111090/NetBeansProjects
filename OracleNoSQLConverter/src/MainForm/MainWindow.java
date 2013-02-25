@@ -60,34 +60,6 @@ public class MainWindow {
         connectionSetupDialog.setModal(true);//Makes window modal
     }
 
-    public static JDialog createWarningDialog(String message) {
-        final JDialog warningDialog = new JDialog();
-        JPanel warningPanel = new MigPanel();
-        JButton ok = new JButton("Ok");
-
-        warningDialog.setTitle("WARNING");
-
-        warningPanel.add(new JLabel(message), "wrap 20");
-        warningPanel.add(ok, "align center");
-        warningDialog.add(warningPanel);
-
-        warningDialog.setSize(190, 130);
-        warningDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        warningDialog.setLocationRelativeTo(null);//Appears on the screen center
-        warningDialog.setModal(true);//Makes window modal
-
-        ok.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                warningDialog.dispose();
-            }
-        });
-        return warningDialog;
-    }
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         ConnectionSettings.setBorder(new TitledBorder("Настройка подключения к БД"));
         resultTables.setBorder(new TitledBorder("Список таблиц"));
@@ -153,8 +125,12 @@ public class MainWindow {
                 int selectedTableIndex = listOfTables.getSelectedIndex();
                 boolean tableNotSelected = selectedTableIndex < 0;
                 if (tableNotSelected) {
-                    JDialog warningDialog = createWarningDialog("<html>You did not selected any table.<br>Please, select table first.</html>");
-                    warningDialog.setVisible(true);
+                    JOptionPane.showMessageDialog(
+                            mainForm,
+                            "You haven't selected any table.",
+                            "Please, select table",
+                            JOptionPane.ERROR_MESSAGE
+                    );
                 } else {
                     String selectedTableName = listOfTables.getSelectedValue().toString();
                     System.out.println(selectedTableName);
