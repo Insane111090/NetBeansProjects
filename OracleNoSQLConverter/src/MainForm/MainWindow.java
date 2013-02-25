@@ -7,9 +7,6 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
-/**
- * @author agavrilov
- */
 public class MainWindow {
 
     static final JFrame mainForm = new JFrame();

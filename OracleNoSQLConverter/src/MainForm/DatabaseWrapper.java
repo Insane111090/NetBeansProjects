@@ -4,10 +4,6 @@ import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author agavrilov
- */
 public class DatabaseWrapper {
 
     static String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
