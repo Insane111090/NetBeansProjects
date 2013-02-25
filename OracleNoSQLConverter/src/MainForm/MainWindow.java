@@ -11,7 +11,7 @@ public class MainWindow {
 
     static final JFrame mainForm = new JFrame();
     static final JPanel mainPanel = new MigPanel();
-    static final JPanel ConnectionSettings = new MigPanel();
+    static final JPanel connectionSettings = new MigPanel();
     static final JPanel resultTables = new MigPanel();
     static public JTextField statusTxt = new JTextField("Not connected");
     static public JTextField connectedUrlTxt = new JTextField();
@@ -33,11 +33,11 @@ public class MainWindow {
         /*
          * Adding elements on MainForm window
          */
-        ConnectionSettings.add(connStatus, "split");
-        ConnectionSettings.add(statusTxt, "wrap 10, w :100:300");//wrap to the next row
-        ConnectionSettings.add(urlconn, "split");
-        ConnectionSettings.add(connectedUrlTxt, "wrap 10, w :500:800, gapleft 20");
-        ConnectionSettings.add(openConnectionSetup, "wrap");
+        connectionSettings.add(connStatus, "split");
+        connectionSettings.add(statusTxt, "wrap 10, w :100:300");//wrap to the next row
+        connectionSettings.add(urlconn, "split");
+        connectionSettings.add(connectedUrlTxt, "wrap 10, w :500:800, gapleft 20");
+        connectionSettings.add(openConnectionSetup, "wrap");
 
         scrollPane.getViewport().setView(listOfTables);
         resultTables.add(scrollPane, "w 100:200:300, h 300,wrap");
@@ -45,7 +45,7 @@ public class MainWindow {
         resultTables.add(countTablesTxt, "w 20");
         resultTables.add(getDdlOfSelectedTable_btn);
 
-        mainPanel.add(ConnectionSettings, "wrap, dock north");
+        mainPanel.add(connectionSettings, "wrap, dock north");
         mainPanel.add(resultTables, "wrap");
         mainPanel.add(exitApplic, "align right, gapright 20");
 
@@ -61,7 +61,7 @@ public class MainWindow {
     }
 
     public static void main(String[] args) {
-        ConnectionSettings.setBorder(new TitledBorder("Настройка подключения к БД"));
+        connectionSettings.setBorder(new TitledBorder("Настройка подключения к БД"));
         resultTables.setBorder(new TitledBorder("Список таблиц"));
 
         /*
@@ -152,7 +152,7 @@ public class MainWindow {
         final static JPasswordField passwordTxt = new JPasswordField();//Field for password input
         final static JTextField connectionStatusLabel = new JTextField();
         final static JTextField connectionUrlLabel = new JTextField();//Field for connection url
-        final static JTextArea Connection_error_txt = new JTextArea();//Connection error
+        final static JTextArea connectionErrorLabel = new JTextArea();//Connection error
 
         /*
          * Procedure for cleaning textFields on connection to DB form
@@ -165,7 +165,7 @@ public class MainWindow {
             passwordTxt.setText("");
             connectionStatusLabel.setText("");
             connectionUrlLabel.setText("");
-            Connection_error_txt.setText("");
+            connectionErrorLabel.setText("");
             connectionStatusLabel.setBackground(Color.WHITE);
         }
 
@@ -213,7 +213,7 @@ public class MainWindow {
             ConnectionPanel.add(stat, "split");
             ConnectionPanel.add(connectionStatusLabel, "wrap,w 50:70:");
             ConnectionPanel.add(Error, "split");
-            ConnectionPanel.add(Connection_error_txt, "wrap 24, w :1200:,gapleft 12");
+            ConnectionPanel.add(connectionErrorLabel, "wrap 24, w :1200:,gapleft 12");
             ConnectionPanel.add(OkButton, "split,align right");
             ConnectionPanel.add(CancelButton);
 
@@ -222,7 +222,7 @@ public class MainWindow {
              */
             connectionStatusLabel.setEditable(false);
             connectionUrlLabel.setEditable(false);
-            Connection_error_txt.setEditable(false);
+            connectionErrorLabel.setEditable(false);
 
             /*
              * ToolTips for buttons and fields on connection form
@@ -279,7 +279,7 @@ public class MainWindow {
                                 "andgavr",//new String(passwordTxt.getPassword()),
                                 url);
                     } catch (ClassNotFoundException e) {
-                        Connection_error_txt.setText("ClassNotFoundException: " + e.getMessage());
+                        connectionErrorLabel.setText("ClassNotFoundException: " + e.getMessage());
                         connectionStatusLabel.setBackground(Color.RED);
                         connectionStatusLabel.setText("Failed");
                         connectionUrlLabel.setText("");

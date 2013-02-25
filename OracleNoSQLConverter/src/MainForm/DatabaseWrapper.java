@@ -22,7 +22,7 @@ public class DatabaseWrapper {
         try {
             MyConnection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            MainWindow.ConnectionConfigDialog.Connection_error_txt.setText("SQL Error: " + e.getErrorCode() + "; " + e.getMessage());
+            MainWindow.ConnectionConfigDialog.connectionErrorLabel.setText("SQL Error: " + e.getErrorCode() + "; " + e.getMessage());
             _isConnected = false;
             MainWindow.ConnectionConfigDialog.connectionStatusLabel.setBackground(Color.RED);
             MainWindow.ConnectionConfigDialog.connectionStatusLabel.setText("Failed");
@@ -35,7 +35,7 @@ public class DatabaseWrapper {
             MainWindow.ConnectionConfigDialog.connectionUrlLabel.setText("");
         } else {
               _isConnected = true;
-            MainWindow.ConnectionConfigDialog.Connection_error_txt.setText("");
+            MainWindow.ConnectionConfigDialog.connectionErrorLabel.setText("");
             MainWindow.ConnectionConfigDialog.connectionStatusLabel.setBackground(Color.GREEN);
             MainWindow.ConnectionConfigDialog.connectionStatusLabel.setText("Succeed");
             MainWindow.ConnectionConfigDialog.connectionUrlLabel.setText("Connected to: " + url);
