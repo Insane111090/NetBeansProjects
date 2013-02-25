@@ -1,15 +1,16 @@
 package MainForm;
 
-import java.awt.*;
+import java.awt.Color;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseWrapper {
 
     static String DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
     static Connection MyConnection;
-    static final ArrayList<String> tables = new ArrayList<String>();
-    static boolean isConnected;
+    static final List<String> tables = new ArrayList<String>();
+    static boolean _isConnected;
     
     /*
      * Function that provides a connection to DB
@@ -22,22 +23,22 @@ public class DatabaseWrapper {
             MyConnection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             MainWindow.ConnectionToDBDialog.Connection_error_txt.setText("SQL Error: " + e.getErrorCode() + "; " + e.getMessage());
-            isConnected = false;
-            MainWindow.ConnectionToDBDialog.Status_connection_txt.setBackground(Color.RED);
-            MainWindow.ConnectionToDBDialog.Status_connection_txt.setText("Failed");
-            MainWindow.ConnectionToDBDialog.conn_res_txt.setText("");
+            _isConnected = false;
+            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setBackground(Color.RED);
+            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setText("Failed");
+            MainWindow.ConnectionToDBDialog.connectionUrlLabel.setText("");
         }
         if (MyConnection == null) {
-            isConnected = false;
-            MainWindow.ConnectionToDBDialog.Status_connection_txt.setBackground(Color.RED);
-            MainWindow.ConnectionToDBDialog.Status_connection_txt.setText("Failed");
-            MainWindow.ConnectionToDBDialog.conn_res_txt.setText("");
+            _isConnected = false;
+            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setBackground(Color.RED);
+            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setText("Failed");
+            MainWindow.ConnectionToDBDialog.connectionUrlLabel.setText("");
         } else {
-              isConnected = true;
+              _isConnected = true;
             MainWindow.ConnectionToDBDialog.Connection_error_txt.setText("");
-            MainWindow.ConnectionToDBDialog. Status_connection_txt.setBackground(Color.GREEN);
-            MainWindow.ConnectionToDBDialog.Status_connection_txt.setText("Succeed");
-            MainWindow.ConnectionToDBDialog.conn_res_txt.setText("Connected to: " + url);
+            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setBackground(Color.GREEN);
+            MainWindow.ConnectionToDBDialog.connectionStatusLabel.setText("Succeed");
+            MainWindow.ConnectionToDBDialog.connectionUrlLabel.setText("Connected to: " + url);
         }
         return MyConnection;
     }
@@ -45,26 +46,24 @@ public class DatabaseWrapper {
     /*
      * Returns 1 or 0, if connected of not
      */
-    public static Boolean isConnect(){     
-        return isConnected;
+    public static Boolean isConnected() {
+        return _isConnected;
     }
     /*
      * Function for getting list of tables of current scheme in Database
      */
-    public static ArrayList<String> getTableList() throws SQLException
-    {
+    public static List<String> getTableList() throws SQLException {
         try {
-            PreparedStatement statementForTables = MyConnection.prepareStatement("Select table_name from all_tables "
-                         + "where not regexp_like(tablespace_name,'SYS.+') "
-                         + "and owner=upper('andgavr')"); 
-                ResultSet DatabaseResultSet = statementForTables.executeQuery();
-                while (DatabaseResultSet.next())
-                {
-                    tables.add(DatabaseResultSet.getString(1));
-                    //System.out.println(DatabaseResultSet.getString(1));
-                }
-            
-            } catch (SQLException e) {
+            PreparedStatement statementForTables =
+                    MyConnection.prepareStatement("Select table_name from all_tables "
+                            + "where not regexp_like(tablespace_name,'SYS.+') "
+                            + "and owner=upper('andgavr')");
+            ResultSet DatabaseResultSet = statementForTables.executeQuery();
+
+            while (DatabaseResultSet.next()) {
+                tables.add(DatabaseResultSet.getString(1));
+            }
+        } catch (SQLException e) {
             System.out.println(e.getErrorCode() + " " + e.getMessage());
         }
         return tables;
@@ -76,5 +75,4 @@ public class DatabaseWrapper {
     public static void clearArrayList(){
         tables.clear();
     }
-
 }

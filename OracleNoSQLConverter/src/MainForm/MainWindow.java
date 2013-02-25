@@ -5,14 +5,14 @@ import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import net.miginfocom.swing.MigLayout;
+import static MainForm.Util.MigPanel;
 
 public class MainWindow {
 
     static final JFrame mainForm = new JFrame();
-    static final JPanel mainPanel = new JPanel(new MigLayout());
-    static final JPanel ConnectionSettings = new JPanel(new MigLayout());
-    static final JPanel resultTables = new JPanel(new MigLayout());
+    static final JPanel mainPanel = new MigPanel();
+    static final JPanel ConnectionSettings = new MigPanel();
+    static final JPanel resultTables = new MigPanel();
     static public JTextField statusTxt = new JTextField("Not connected");
     static public JTextField connectedUrlTxt = new JTextField();
     static final ConnectionToDBDialog connectionSetupDialog = new ConnectionToDBDialog();
@@ -62,7 +62,7 @@ public class MainWindow {
 
     public static JDialog createWarningDialog(String message) {
         final JDialog warningDialog = new JDialog();
-        JPanel warningPanel = new JPanel(new MigLayout());
+        JPanel warningPanel = new MigPanel();
         JButton ok = new JButton("Ok");
 
         warningDialog.setTitle("WARNING");
@@ -173,13 +173,12 @@ public class MainWindow {
         final static JTextField sidTxt = new JTextField();//Field for sid input
         final static JTextField usernameTxt = new JTextField();//Field for username input
         final static JPasswordField passwordTxt = new JPasswordField();//Field for password input
-        final static JTextField Status_connection_txt = new JTextField();//Field for connection status(Failed or not)
-        final static JTextField conn_res_txt = new JTextField();//Field for connection url
+        final static JTextField connectionStatusLabel = new JTextField();
+        final static JTextField connectionUrlLabel = new JTextField();//Field for connection url
         final static JTextArea Connection_error_txt = new JTextArea();//Connection error
-        public static boolean isConnected;//boolean flag
 
         /*
-         * Procedure for cleaning textFields on connectionto DB form
+         * Procedure for cleaning textFields on connection to DB form
          */
         public static void clearFields() {
             serverTxt.setText("");
@@ -187,10 +186,10 @@ public class MainWindow {
             sidTxt.setText("");
             usernameTxt.setText("");
             passwordTxt.setText("");
-            Status_connection_txt.setText("");
-            conn_res_txt.setText("");
+            connectionStatusLabel.setText("");
+            connectionUrlLabel.setText("");
             Connection_error_txt.setText("");
-            Status_connection_txt.setBackground(Color.WHITE);
+            connectionStatusLabel.setBackground(Color.WHITE);
         }
 
         /*
@@ -199,9 +198,9 @@ public class MainWindow {
         public void createFormGUI(JButton ConnectButton,
                 JButton OkButton,
                 JButton CancelButton) {
-            final JPanel ConnectionPanel = new JPanel(new MigLayout());
-            final JPanel InputServerPanel = new JPanel(new MigLayout());
-            final JPanel InputUserPanel = new JPanel(new MigLayout());
+            final JPanel ConnectionPanel = new MigPanel();
+            final JPanel InputServerPanel = new MigPanel();
+            final JPanel InputUserPanel = new MigPanel();
             final JLabel serverLbl = new JLabel("Server: ");
             final JLabel portLbl = new JLabel("Port: ");
             final JLabel sidLbl = new JLabel("SID: ");
@@ -233,9 +232,9 @@ public class MainWindow {
             ConnectionPanel.add(InputServerPanel, "split");
             ConnectionPanel.add(InputUserPanel, "wrap 10, gapleft 20");
             ConnectionPanel.add(ConnectButton, "split");
-            ConnectionPanel.add(conn_res_txt, "wrap 10,grow");
+            ConnectionPanel.add(connectionUrlLabel, "wrap 10,grow");
             ConnectionPanel.add(stat, "split");
-            ConnectionPanel.add(Status_connection_txt, "wrap,w 50:70:");
+            ConnectionPanel.add(connectionStatusLabel, "wrap,w 50:70:");
             ConnectionPanel.add(Error, "split");
             ConnectionPanel.add(Connection_error_txt, "wrap 24, w :1200:,gapleft 12");
             ConnectionPanel.add(OkButton, "split,align right");
@@ -244,8 +243,8 @@ public class MainWindow {
             /*
              * Editable fields on Connection form
              */
-            Status_connection_txt.setEditable(false);
-            conn_res_txt.setEditable(false);
+            connectionStatusLabel.setEditable(false);
+            connectionUrlLabel.setEditable(false);
             Connection_error_txt.setEditable(false);
 
             /*
@@ -304,10 +303,9 @@ public class MainWindow {
                                 url);
                     } catch (ClassNotFoundException e) {
                         Connection_error_txt.setText("ClassNotFoundException: " + e.getMessage());
-                        isConnected = false;
-                        Status_connection_txt.setBackground(Color.RED);
-                        Status_connection_txt.setText("Failed");
-                        conn_res_txt.setText("");
+                        connectionStatusLabel.setBackground(Color.RED);
+                        connectionStatusLabel.setText("Failed");
+                        connectionUrlLabel.setText("");
                     }
                 }
             });
@@ -316,14 +314,14 @@ public class MainWindow {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
-                        if (DatabaseWrapper.isConnect()) {
+                        if (DatabaseWrapper.isConnected()) {
                             MainWindow.statusTxt.setText("Connected");
                             MainWindow.statusTxt.setBackground(Color.green);
-                            MainWindow.connectedUrlTxt.setText(conn_res_txt.getText());
+                            MainWindow.connectedUrlTxt.setText(connectionUrlLabel.getText());
                         } else {
                             MainWindow.statusTxt.setText("Not connected");
                             MainWindow.statusTxt.setBackground(Color.red);
-                            MainWindow.connectedUrlTxt.setText(conn_res_txt.getText());
+                            MainWindow.connectedUrlTxt.setText(connectionUrlLabel.getText());
                         }
                         listOfTables.setListData(DatabaseWrapper.getTableList().toArray());
                         countTablesTxt.setVisible(true);
