@@ -11,7 +11,7 @@ public class DatabaseWrapper {
     static Connection MyConnection;
     static final List<String> tables = new ArrayList<String>();
     static boolean _isConnected;
-    
+        
     /*
      * Function that provides a connection to DB
      */
@@ -24,26 +24,6 @@ public class DatabaseWrapper {
         } finally {
             _isConnected = MyConnection != null? true : false;
         } 
-        
-//        catch (SQLException e) {
-//            MainWindow.ConnectionConfigDialog.connectionErrorLabel.setText("SQL Error: " + e.getErrorCode() + "; " + e.getMessage());
-//            _isConnected = false;
-//            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setBackground(Color.RED);
-//            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setText("Failed");
-//            MainWindow.ConnectionConfigDialog.connectionUrlLabel.setText("");
-//        }
-//        if (MyConnection == null) {
-//            _isConnected = false;
-//            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setBackground(Color.RED);
-//            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setText("Failed");
-//            MainWindow.ConnectionConfigDialog.connectionUrlLabel.setText("");
-//        } else {
-//              _isConnected = true;
-//            MainWindow.ConnectionConfigDialog.connectionErrorLabel.setText("");
-//            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setBackground(Color.GREEN);
-//            MainWindow.ConnectionConfigDialog.connectionStatusLabel.setText("Succeed");
-//            MainWindow.ConnectionConfigDialog.connectionUrlLabel.setText("Connected to: " + url);
-//        }
         return MyConnection;
     }
     
