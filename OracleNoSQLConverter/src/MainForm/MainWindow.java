@@ -5,20 +5,17 @@ import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import net.miginfocom.swing.MigLayout;
+import static MainForm.Util.MigPanel;
 
-/**
- * @author agavrilov
- */
 public class MainWindow {
 
     static final JFrame mainForm = new JFrame();
-    static final JPanel mainPanel = new JPanel(new MigLayout());
-    static final JPanel ConnectionSettings = new JPanel(new MigLayout());
-    static final JPanel resultTables = new JPanel(new MigLayout());
+    static final JPanel mainPanel = new MigPanel();
+    static final JPanel connectionSettings = new MigPanel();
+    static final JPanel resultTables = new MigPanel();
     static public JTextField statusTxt = new JTextField("Not connected");
-    static public JTextField connectedUrltxt = new JTextField();
-    static final ConnectionToDBDialog connectionSetupDialoge = new ConnectionToDBDialog();
+    static public JTextField connectedUrlTxt = new JTextField();
+    static final ConnectionConfigDialog connectionSetupDialog = new ConnectionConfigDialog();
     static final String[] tstr = {""};
     static JList listOfTables = new JList(tstr);//List of result tables from Database
     static JScrollPane scrollPane = new JScrollPane();
@@ -36,11 +33,11 @@ public class MainWindow {
         /*
          * Adding elements on MainForm window
          */
-        ConnectionSettings.add(connStatus, "split");
-        ConnectionSettings.add(statusTxt, "wrap 10, w :100:300");//wrap to the next row
-        ConnectionSettings.add(urlconn, "split");
-        ConnectionSettings.add(connectedUrltxt, "wrap 10, w :500:800, gapleft 20");
-        ConnectionSettings.add(openConnectionSetup, "wrap");
+        connectionSettings.add(connStatus, "split");
+        connectionSettings.add(statusTxt, "wrap 10, w :100:300");//wrap to the next row
+        connectionSettings.add(urlconn, "split");
+        connectionSettings.add(connectedUrlTxt, "wrap 10, w :500:800, gapleft 20");
+        connectionSettings.add(openConnectionSetup, "wrap");
 
         scrollPane.getViewport().setView(listOfTables);
         resultTables.add(scrollPane, "w 100:200:300, h 300,wrap");
@@ -48,7 +45,7 @@ public class MainWindow {
         resultTables.add(countTablesTxt, "w 20");
         resultTables.add(getDdlOfSelectedTable_btn);
 
-        mainPanel.add(ConnectionSettings, "wrap, dock north");
+        mainPanel.add(connectionSettings, "wrap, dock north");
         mainPanel.add(resultTables, "wrap");
         mainPanel.add(exitApplic, "align right, gapright 20");
 
@@ -60,43 +57,11 @@ public class MainWindow {
         mainForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainForm.setLocationRelativeTo(null);//Appears on the screen center
 
-        connectionSetupDialoge.setModal(true);//Makes window modal  
+        connectionSetupDialog.setModal(true);//Makes window modal
     }
 
-    public static void WarningDialoge(String warningTextIn) {
-        final JDialog warningDialoge = new JDialog();
-        final JPanel warningPanel = new JPanel(new MigLayout());
-        final JLabel warningText = new JLabel();
-        final JButton ok = new JButton("Ok");
-
-        warningText.setText(warningTextIn);
-
-        warningDialoge.setTitle("WARNING");
-
-        warningPanel.add(warningText, "wrap 20");
-        warningPanel.add(ok, "align center");
-
-        warningDialoge.add(warningPanel);
-        warningDialoge.setSize(190, 130);
-        warningDialoge.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        warningDialoge.setLocationRelativeTo(null);//Appears on the screen center
-        warningDialoge.setModal(true);//Makes window modal 
-
-        ok.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                warningDialoge.dispose();
-            }
-        });
-
-        warningDialoge.setVisible(true);
-    }
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        ConnectionSettings.setBorder(new TitledBorder("Настройка подключения к БД"));
+        connectionSettings.setBorder(new TitledBorder("Настройка подключения к БД"));
         resultTables.setBorder(new TitledBorder("Список таблиц"));
 
         /*
@@ -127,7 +92,7 @@ public class MainWindow {
         countTablesTxt.setBorder(null);
         countTablesTxt.setEditable(false);
 
-        connectedUrltxt.setEditable(false);
+        connectedUrlTxt.setEditable(false);
 
         statusTxt.setEditable(false);
         statusTxt.setBackground(Color.red);
@@ -141,9 +106,9 @@ public class MainWindow {
         openConnectionSetup.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                connectionSetupDialoge.setTitle("Connection settings");
-                connectionSetupDialoge.setSize(550, 350);
-                connectionSetupDialoge.setVisible(true);
+                connectionSetupDialog.setTitle("Connection settings");
+                connectionSetupDialog.setSize(550, 350);
+                connectionSetupDialog.setVisible(true);
             }
         });
         //Exit button event
@@ -153,6 +118,7 @@ public class MainWindow {
                 System.exit(0);
             }
         });
+
         //GetDDL button event
         getDdlOfSelectedTable_btn.addActionListener(new AbstractAction() {
             @Override
@@ -160,11 +126,15 @@ public class MainWindow {
                 int selectedTableIndex = listOfTables.getSelectedIndex();
                 boolean tableNotSelected = selectedTableIndex < 0;
                 if (tableNotSelected) {
-                    WarningDialoge("<html>You did not selet any table.<br>Please, select table first.</html>");
+                    JOptionPane.showMessageDialog(
+                            mainForm,
+                            "You haven't selected any table.",
+                            "Please, select table",
+                            JOptionPane.ERROR_MESSAGE
+                    );
                 } else {
                     String selectedTableName = listOfTables.getSelectedValue().toString();
                     System.out.println(selectedTableName);
-
                 }
             }
         });
@@ -173,20 +143,19 @@ public class MainWindow {
     /*
      * Class for connection to Database, where user enters a server Name, port, username and password
      */
-    public static final class ConnectionToDBDialog extends JDialog {
+    public static final class ConnectionConfigDialog extends JDialog {
 
         final static JTextField serverTxt = new JTextField();//Field for server input
         final static JTextField portTxt = new JTextField();//Field for port input
         final static JTextField sidTxt = new JTextField();//Field for sid input
         final static JTextField usernameTxt = new JTextField();//Field for username input
         final static JPasswordField passwordTxt = new JPasswordField();//Field for password input
-        final static JTextField Status_connection_txt = new JTextField();//Field for connection status(Failed or not)
-        final static JTextField conn_res_txt = new JTextField();//Field for connection url
-        final static JTextArea Connection_error_txt = new JTextArea();//Connection error
-        public static boolean isConnected;//boolean flag
+        final static JTextField connectionStatusLabel = new JTextField();
+        final static JTextField connectionUrlLabel = new JTextField();//Field for connection url
+        final static JTextArea connectionErrorLabel = new JTextArea();//Connection error
 
         /*
-         * Procedure for cleaning textFields on connectionto DB form
+         * Procedure for cleaning textFields on connection to DB form
          */
         public static void clearFields() {
             serverTxt.setText("");
@@ -194,10 +163,10 @@ public class MainWindow {
             sidTxt.setText("");
             usernameTxt.setText("");
             passwordTxt.setText("");
-            Status_connection_txt.setText("");
-            conn_res_txt.setText("");
-            Connection_error_txt.setText("");
-            Status_connection_txt.setBackground(Color.WHITE);
+            connectionStatusLabel.setText("");
+            connectionUrlLabel.setText("");
+            connectionErrorLabel.setText("");
+            connectionStatusLabel.setBackground(Color.WHITE);
         }
 
         /*
@@ -206,9 +175,9 @@ public class MainWindow {
         public void createFormGUI(JButton ConnectButton,
                 JButton OkButton,
                 JButton CancelButton) {
-            final JPanel ConnectionPanel = new JPanel(new MigLayout());
-            final JPanel InputServerPanel = new JPanel(new MigLayout());
-            final JPanel InputUserPanel = new JPanel(new MigLayout());
+            final JPanel ConnectionPanel = new MigPanel();
+            final JPanel InputServerPanel = new MigPanel();
+            final JPanel InputUserPanel = new MigPanel();
             final JLabel serverLbl = new JLabel("Server: ");
             final JLabel portLbl = new JLabel("Port: ");
             final JLabel sidLbl = new JLabel("SID: ");
@@ -240,20 +209,20 @@ public class MainWindow {
             ConnectionPanel.add(InputServerPanel, "split");
             ConnectionPanel.add(InputUserPanel, "wrap 10, gapleft 20");
             ConnectionPanel.add(ConnectButton, "split");
-            ConnectionPanel.add(conn_res_txt, "wrap 10,grow");
+            ConnectionPanel.add(connectionUrlLabel, "wrap 10,grow");
             ConnectionPanel.add(stat, "split");
-            ConnectionPanel.add(Status_connection_txt, "wrap,w 50:70:");
+            ConnectionPanel.add(connectionStatusLabel, "wrap,w 50:70:");
             ConnectionPanel.add(Error, "split");
-            ConnectionPanel.add(Connection_error_txt, "wrap 24, w :1200:,gapleft 12");
+            ConnectionPanel.add(connectionErrorLabel, "wrap 24, w :1200:,gapleft 12");
             ConnectionPanel.add(OkButton, "split,align right");
             ConnectionPanel.add(CancelButton);
 
             /*
              * Editable fields on Connection form
              */
-            Status_connection_txt.setEditable(false);
-            conn_res_txt.setEditable(false);
-            Connection_error_txt.setEditable(false);
+            connectionStatusLabel.setEditable(false);
+            connectionUrlLabel.setEditable(false);
+            connectionErrorLabel.setEditable(false);
 
             /*
              * ToolTips for buttons and fields on connection form
@@ -272,7 +241,7 @@ public class MainWindow {
         }
 
         //main
-        ConnectionToDBDialog() {
+        ConnectionConfigDialog() {
             super(mainForm);//calls mainForm constructor
             final JButton ConnectButton = new JButton("Connect");//Button for connection
             final JButton OkButton = new JButton("Ok");
@@ -306,15 +275,14 @@ public class MainWindow {
                         //username = "andgavr";//usernameTxt.getText().toString();//"andgavr";
                         //password = "andgavr";//new String(passwordTxt.getPassword());//"andgavr";
 
-                        DataBase.createConnection("andgavr",//usernameTxt.getText(),
+                        DatabaseWrapper.createConnection("andgavr",//usernameTxt.getText(),
                                 "andgavr",//new String(passwordTxt.getPassword()),
                                 url);
                     } catch (ClassNotFoundException e) {
-                        Connection_error_txt.setText("ClassNotFoundException: " + e.getMessage());
-                        isConnected = false;
-                        Status_connection_txt.setBackground(Color.RED);
-                        Status_connection_txt.setText("Failed");
-                        conn_res_txt.setText("");
+                        connectionErrorLabel.setText("ClassNotFoundException: " + e.getMessage());
+                        connectionStatusLabel.setBackground(Color.RED);
+                        connectionStatusLabel.setText("Failed");
+                        connectionUrlLabel.setText("");
                     }
                 }
             });
@@ -323,20 +291,20 @@ public class MainWindow {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     try {
-                        if (DataBase.isConnect()) {
+                        if (DatabaseWrapper.isConnected()) {
                             MainWindow.statusTxt.setText("Connected");
                             MainWindow.statusTxt.setBackground(Color.green);
-                            MainWindow.connectedUrltxt.setText(conn_res_txt.getText());
+                            MainWindow.connectedUrlTxt.setText(connectionUrlLabel.getText());
                         } else {
                             MainWindow.statusTxt.setText("Not connected");
                             MainWindow.statusTxt.setBackground(Color.red);
-                            MainWindow.connectedUrltxt.setText(conn_res_txt.getText());
+                            MainWindow.connectedUrlTxt.setText(connectionUrlLabel.getText());
                         }
-                        listOfTables.setListData(DataBase.getTableList().toArray());
+                        listOfTables.setListData(DatabaseWrapper.getTableList().toArray());
                         countTablesTxt.setVisible(true);
-                        countTablesTxt.setText(String.valueOf(DataBase.tablesArray.size()));
+                        countTablesTxt.setText(String.valueOf(DatabaseWrapper.tables.size()));
 
-                        DataBase.clearArrayList();
+                        DatabaseWrapper.clearArrayList();
                         dispose();
                     } catch (SQLException ex) {
                     }
