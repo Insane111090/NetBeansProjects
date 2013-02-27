@@ -266,24 +266,44 @@ public class MainWindow {
             ConnectButton.addActionListener(new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
+                    String server = "oracle11.avalon.ru"; //serverTxt.getText().toString();//"oracle11.avalon.ru"
+                    String sid = "";//sidTxt.getText().toUpperCase().toString();//"ORCL";
+                    int port = Integer.decode("1521");//portTxt.getText().toString();//"1521";
+                    String url = "jdbc:oracle:thin:@" + server + ":" + port + ":" + sid;
                     try {
-                        String server = "oracle11.avalon.ru"; //serverTxt.getText().toString();//"oracle11.avalon.ru"
-                        String sid = "ORCL";//sidTxt.getText().toUpperCase().toString();//"ORCL";
-                        int port = Integer.decode("1521");//portTxt.getText().toString();//"1521";
-                        String url = "jdbc:oracle:thin:@" + server + ":" + port + ":" + sid;
-
                         //username = "andgavr";//usernameTxt.getText().toString();//"andgavr";
                         //password = "andgavr";//new String(passwordTxt.getPassword());//"andgavr";
-
-                        DatabaseWrapper.createConnection("andgavr",//usernameTxt.getText(),
+                        
+                            DatabaseWrapper.createConnection("andgavr",//usernameTxt.getText(),
                                 "andgavr",//new String(passwordTxt.getPassword()),
                                 url);
-                    } catch (ClassNotFoundException e) {
+                        
+                    } catch(SQLException e ) {
+                         ConnectionConfigDialog.connectionErrorLabel.setText("SQL Error: " + e.getErrorCode() + "; " + e.getMessage());
+                         ConnectionConfigDialog.connectionStatusLabel.setBackground(Color.RED);
+                         ConnectionConfigDialog.connectionStatusLabel.setText("Failed");
+                         ConnectionConfigDialog.connectionUrlLabel.setText("");
+                    }
+                    catch (ClassNotFoundException e) {
                         connectionErrorLabel.setText("ClassNotFoundException: " + e.getMessage());
                         connectionStatusLabel.setBackground(Color.RED);
                         connectionStatusLabel.setText("Failed");
                         connectionUrlLabel.setText("");
                     }
+                    if (DatabaseWrapper.isConnected()) {
+                        ConnectionConfigDialog.connectionErrorLabel.setText("");
+                        ConnectionConfigDialog.connectionStatusLabel.setBackground(Color.GREEN);
+                        ConnectionConfigDialog.connectionStatusLabel.setText("Succeed");
+                        ConnectionConfigDialog.connectionUrlLabel.setText("Connected to: " + url);
+                        
+                    } 
+                    else {
+                        ConnectionConfigDialog.connectionStatusLabel.setBackground(Color.RED);
+                        ConnectionConfigDialog.connectionStatusLabel.setText("Failed");
+                        ConnectionConfigDialog.connectionUrlLabel.setText("");
+                   }
+                    
+                    
                 }
             });
             //Ok Button (Confirm)
