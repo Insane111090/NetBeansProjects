@@ -119,7 +119,6 @@ public class DatabaseWrapper
               .append("</td> <td>")
               .append(descriptionResultSet.getString(3))
               .append("</td>");
-      //descriptionResultSet.getString(3) + "\n";
     }
     return descriptionResult.toString();
   }

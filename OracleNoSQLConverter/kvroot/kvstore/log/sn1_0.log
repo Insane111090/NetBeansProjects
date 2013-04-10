@@ -1,54 +1,36 @@
-2013-04-10 13:15:30.807 UTC INFO [sn1] Starting StorageNodeAgent for kvstore
-2013-04-10 13:15:30.815 UTC INFO [sn1] Acquiring initial topology from RNs
-2013-04-10 13:15:30.818 UTC INFO [sn1] Starting MonitorAgent.  Server socket factory:<ServerSocketFactory name=monitor backlog=0 port range=0,0> Client socket factory:<ClientSocketFactory name=kvstore|sn|monitor id=1354498358 connectMs=10000 readMs=5000>
-2013-04-10 13:15:30.826 UTC INFO [sn1] Rebound to registry port 5000 using name sn1
-2013-04-10 13:15:30.826 UTC INFO [sn1] Service status changed from STARTING to RUNNING
-2013-04-10 13:15:30.826 UTC INFO [sn1] Started StorageNodeAgent for kvstore Server socket factory: <ServerSocketFactory name=main backlog=0 port range=0,0> Client socket factory: <ClientSocketFactory name=kvstore|sn|main id=-325544893 connectMs=10000 readMs=140000>
-2013-04-10 13:15:31.402 UTC INFO [sn1] admin1: Creating AdminService
-2013-04-10 13:15:31.615 UTC INFO [sn1] admin1: Created AdminService
-2013-04-10 13:15:32.116 UTC INFO [sn1] rg1-rn1: Creating RepNode
-2013-04-10 13:15:32.335 UTC INFO [sn1] rg1-rn1: Starting RepNode
-2013-04-10 13:15:32.337 UTC INFO [sn1] rg1-rn1: Started RepNode
-2013-04-10 13:15:32.337 UTC INFO [sn1] rg1-rn1: Configuring RepNode
-2013-04-10 13:15:33.233 UTC INFO [sn1] Thread returning for service rg1-rn1
-2013-04-10 13:15:33.412 UTC INFO [sn1] rg1-rn1: Created RepNode
-2013-04-10 13:15:34.232 UTC INFO [sn1] noteState called
-2013-04-10 13:15:34.232 UTC INFO [sn1] added:State RN:rg1-rn1 state: MASTER top seq num: 14
-2013-04-10 13:15:34.821 UTC INFO [sn1] Topology acquired from RN: rg1-rn1 Topo seq#: 14
-2013-04-10 13:15:34.822 UTC INFO [sn1] sn: sn1 state transition: State RN:rg1-rn1 state: MASTER top seq num: 14 active masters:[rg1-rn1] active replicas:0 replica leases:0
-2013-04-10 13:22:27.525 UTC INFO [sn1] Starting StorageNodeAgent for kvstore
-2013-04-10 13:22:27.527 UTC INFO [sn1] Creating a Registry on port AGavrilov-nb2:5000 server socket factory:<ServerSocketFactory name=registry backlog=1024 port range=0,0>
-2013-04-10 13:22:27.556 UTC INFO [sn1] Using mgmt class oracle.kv.impl.mgmt.NoOpAgent
-2013-04-10 13:22:27.961 UTC INFO [sn1] Acquiring initial topology from RNs
-2013-04-10 13:22:27.965 UTC INFO [sn1] rg1-rn1: Starting RepNode
-2013-04-10 13:22:27.965 UTC INFO [sn1] rg1-rn1: Started RepNode
-2013-04-10 13:22:27.969 UTC INFO [sn1] admin1: Starting AdminService
-2013-04-10 13:22:27.969 UTC INFO [sn1] admin1: Started AdminService
-2013-04-10 13:22:27.970 UTC INFO [sn1] Starting MonitorAgent.  Server socket factory:<ServerSocketFactory name=monitor backlog=0 port range=0,0> Client socket factory:<ClientSocketFactory name=kvstore|sn|monitor id=1354498358 connectMs=10000 readMs=5000>
-2013-04-10 13:22:28.033 UTC INFO [sn1] Rebound to registry port 5000 using name sn1
-2013-04-10 13:22:28.033 UTC INFO [sn1] Service status changed from STARTING to RUNNING
-2013-04-10 13:22:28.033 UTC INFO [sn1] Started StorageNodeAgent for kvstore Server socket factory: <ServerSocketFactory name=main backlog=0 port range=0,0> Client socket factory: <ClientSocketFactory name=kvstore|sn|main id=-325544893 connectMs=10000 readMs=140000>
-2013-04-10 13:22:31.103 UTC INFO [sn1] Thread returning for service rg1-rn1
-2013-04-10 13:22:31.104 UTC INFO [sn1] noteState called
-2013-04-10 13:22:31.104 UTC INFO [sn1] added:State RN:rg1-rn1 state: MASTER top seq num: 14
-2013-04-10 13:22:31.967 UTC INFO [sn1] Topology acquired from RN: rg1-rn1 Topo seq#: 14
-2013-04-10 13:22:31.967 UTC INFO [sn1] sn: sn1 state transition: State RN:rg1-rn1 state: MASTER top seq num: 14 active masters:[rg1-rn1] active replicas:0 replica leases:0
-2013-04-10 13:22:32.499 UTC INFO [sn1] Thread returning for service admin1
-2013-04-10 13:23:57.240 UTC INFO [sn1] Starting StorageNodeAgent for kvstore
-2013-04-10 13:23:57.241 UTC INFO [sn1] Creating a Registry on port AGavrilov-nb2:5000 server socket factory:<ServerSocketFactory name=registry backlog=1024 port range=0,0>
-2013-04-10 13:23:57.271 UTC INFO [sn1] Using mgmt class oracle.kv.impl.mgmt.NoOpAgent
-2013-04-10 13:23:57.651 UTC INFO [sn1] Acquiring initial topology from RNs
-2013-04-10 13:23:57.655 UTC INFO [sn1] rg1-rn1: Starting RepNode
-2013-04-10 13:23:57.655 UTC INFO [sn1] rg1-rn1: Started RepNode
-2013-04-10 13:23:57.659 UTC INFO [sn1] admin1: Starting AdminService
-2013-04-10 13:23:57.660 UTC INFO [sn1] admin1: Started AdminService
-2013-04-10 13:23:57.660 UTC INFO [sn1] Starting MonitorAgent.  Server socket factory:<ServerSocketFactory name=monitor backlog=0 port range=0,0> Client socket factory:<ClientSocketFactory name=kvstore|sn|monitor id=1354498358 connectMs=10000 readMs=5000>
-2013-04-10 13:23:57.726 UTC INFO [sn1] Rebound to registry port 5000 using name sn1
-2013-04-10 13:23:57.726 UTC INFO [sn1] Service status changed from STARTING to RUNNING
-2013-04-10 13:23:57.726 UTC INFO [sn1] Started StorageNodeAgent for kvstore Server socket factory: <ServerSocketFactory name=main backlog=0 port range=0,0> Client socket factory: <ClientSocketFactory name=kvstore|sn|main id=-325544893 connectMs=10000 readMs=140000>
-2013-04-10 13:24:00.576 UTC INFO [sn1] noteState called
-2013-04-10 13:24:00.577 UTC INFO [sn1] added:State RN:rg1-rn1 state: MASTER top seq num: 14
-2013-04-10 13:24:00.579 UTC INFO [sn1] Thread returning for service rg1-rn1
-2013-04-10 13:24:00.657 UTC INFO [sn1] Topology acquired from RN: rg1-rn1 Topo seq#: 14
-2013-04-10 13:24:00.657 UTC INFO [sn1] sn: sn1 state transition: State RN:rg1-rn1 state: MASTER top seq num: 14 active masters:[rg1-rn1] active replicas:0 replica leases:0
-2013-04-10 13:24:01.955 UTC INFO [sn1] Thread returning for service admin1
+2013-04-10 18:53:02.173 UTC INFO [sn1] Starting StorageNodeAgent for kvstore
+2013-04-10 18:53:02.181 UTC INFO [sn1] Acquiring initial topology from RNs
+2013-04-10 18:53:02.184 UTC INFO [sn1] Starting MonitorAgent.  Server socket factory:<ServerSocketFactory name=monitor backlog=0 port range=0,0> Client socket factory:<ClientSocketFactory name=kvstore|sn|monitor id=1354498358 connectMs=10000 readMs=5000>
+2013-04-10 18:53:02.193 UTC INFO [sn1] Rebound to registry port 5000 using name sn1
+2013-04-10 18:53:02.194 UTC INFO [sn1] Service status changed from STARTING to RUNNING
+2013-04-10 18:53:02.194 UTC INFO [sn1] Started StorageNodeAgent for kvstore Server socket factory: <ServerSocketFactory name=main backlog=0 port range=0,0> Client socket factory: <ClientSocketFactory name=kvstore|sn|main id=-325544893 connectMs=10000 readMs=140000>
+2013-04-10 18:53:02.588 UTC INFO [sn1] admin1: Creating AdminService
+2013-04-10 18:53:02.807 UTC INFO [sn1] admin1: Created AdminService
+2013-04-10 18:53:03.929 UTC INFO [sn1] rg1-rn1: Creating RepNode
+2013-04-10 18:53:04.144 UTC INFO [sn1] rg1-rn1: Starting RepNode
+2013-04-10 18:53:04.144 UTC INFO [sn1] rg1-rn1: Started RepNode
+2013-04-10 18:53:04.144 UTC INFO [sn1] rg1-rn1: Configuring RepNode
+2013-04-10 18:53:04.973 UTC INFO [sn1] Thread returning for service rg1-rn1
+2013-04-10 18:53:05.604 UTC INFO [sn1] rg1-rn1: Created RepNode
+2013-04-10 18:53:05.974 UTC INFO [sn1] noteState called
+2013-04-10 18:53:05.974 UTC INFO [sn1] added:State RN:rg1-rn1 state: MASTER top seq num: 4
+2013-04-10 18:53:06.184 UTC INFO [sn1] Topology acquired from RN: rg1-rn1 Topo seq#: 4
+2013-04-10 18:53:06.184 UTC INFO [sn1] sn: sn1 state transition: State RN:rg1-rn1 state: MASTER top seq num: 4 active masters:[rg1-rn1] active replicas:0 replica leases:0
+2013-04-10 18:55:25.730 UTC INFO [sn1] Starting StorageNodeAgent for kvstore
+2013-04-10 18:55:25.732 UTC INFO [sn1] Creating a Registry on port Insane:5000 server socket factory:<ServerSocketFactory name=registry backlog=1024 port range=0,0>
+2013-04-10 18:55:25.765 UTC INFO [sn1] Using mgmt class oracle.kv.impl.mgmt.NoOpAgent
+2013-04-10 18:55:26.140 UTC INFO [sn1] Acquiring initial topology from RNs
+2013-04-10 18:55:26.144 UTC INFO [sn1] rg1-rn1: Starting RepNode
+2013-04-10 18:55:26.144 UTC INFO [sn1] rg1-rn1: Started RepNode
+2013-04-10 18:55:26.148 UTC INFO [sn1] admin1: Starting AdminService
+2013-04-10 18:55:26.148 UTC INFO [sn1] admin1: Started AdminService
+2013-04-10 18:55:26.149 UTC INFO [sn1] Starting MonitorAgent.  Server socket factory:<ServerSocketFactory name=monitor backlog=0 port range=0,0> Client socket factory:<ClientSocketFactory name=kvstore|sn|monitor id=1354498358 connectMs=10000 readMs=5000>
+2013-04-10 18:55:26.233 UTC INFO [sn1] Rebound to registry port 5000 using name sn1
+2013-04-10 18:55:26.234 UTC INFO [sn1] Service status changed from STARTING to RUNNING
+2013-04-10 18:55:26.234 UTC INFO [sn1] Started StorageNodeAgent for kvstore Server socket factory: <ServerSocketFactory name=main backlog=0 port range=0,0> Client socket factory: <ClientSocketFactory name=kvstore|sn|main id=-325544893 connectMs=10000 readMs=140000>
+2013-04-10 18:55:29.272 UTC INFO [sn1] noteState called
+2013-04-10 18:55:29.272 UTC INFO [sn1] added:State RN:rg1-rn1 state: MASTER top seq num: 14
+2013-04-10 18:55:29.275 UTC INFO [sn1] Thread returning for service rg1-rn1
+2013-04-10 18:55:30.150 UTC INFO [sn1] Topology acquired from RN: rg1-rn1 Topo seq#: 14
+2013-04-10 18:55:30.150 UTC INFO [sn1] sn: sn1 state transition: State RN:rg1-rn1 state: MASTER top seq num: 14 active masters:[rg1-rn1] active replicas:0 replica leases:0
+2013-04-10 18:55:31.341 UTC INFO [sn1] Thread returning for service admin1

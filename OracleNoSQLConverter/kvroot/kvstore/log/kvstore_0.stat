@@ -1,4 +1,70 @@
-2013-04-10 13:23:10.937 UTC INFO [kvstore] rg1-rn1 (13:22:28.077 UTC -> 13:23:00.080 UTC)
+2013-04-10 18:54:05.624 UTC INFO [kvstore] rg1-rn1 (18:53:04.199 UTC -> 18:54:00.201 UTC)
+Cache
+	adminBytes=573
+	cacheTotalBytes=9 773 693
+	dataBytes=40 144
+	lockBytes=880
+	nBINsFetch=95
+	nCachedBINs=7
+	nCachedUpperINs=7
+	nINNoTarget=4
+	nINSparseTarget=8
+	nLNsFetch=25
+	nLNsFetchMiss=15
+Checkpoints
+	lastCheckpointEnd=0x0/0x427
+	lastCheckpointId=1
+	lastCheckpointStart=0x0/0x1d0
+	nCheckpoints=1
+	nFullBINFlush=2
+	nFullINFlush=4
+Cleaning
+	correctedAvgLNSize=NaN
+	totalLogSize=169 546
+I/O
+	bufferBytes=9 732 096
+	endOfLog=0x0/0x294a0
+	nFSyncRequests=5
+	nFSyncTime=1 013
+	nFSyncs=5
+	nFileOpens=4
+	nLogBuffers=16
+	nLogFSyncs=9
+	nNotResident=15
+	nRandomWriteBytes=38
+	nRandomWrites=1
+	nSequentialReadBytes=12 288
+	nSequentialReads=3
+	nSequentialWriteBytes=169 546
+	nSequentialWrites=19
+Locks
+	nOwners=11
+	nReadLocks=11
+	nRequests=115
+	nTotalLocks=11
+
+2013-04-10 18:54:05.624 UTC INFO [kvstore] rg1-rn1 (18:53:04.199 UTC -> 18:54:00.201 UTC)
+FeederManager
+	nMaxReplicaLag=NONE
+Replay
+	maxCommitProcessingNanos=NONE
+	minCommitProcessingNanos=NONE
+VLSNIndex
+	nBucketsCreated=1
+
+2013-04-10 18:54:05.624 UTC INFO [kvstore] rg1-rn1 (18:53:04.199 UTC -> 18:54:00.201 UTC)
+Memory
+	freeMemory=26002704
+	maxMemory=259522560
+	totalMemory=69500928
+Copy
+	count=16
+	time=61
+MarkSweepCompact
+	count=3
+	time=66
+
+2013-04-10 18:56:09.188 UTC INFO [kvstore] rg1-rn1 (18:55:26.278 UTC -> 18:56:00.279 UTC)
 Cache
 	adminBytes=573
 	cacheTotalBytes=9 775 197
@@ -14,21 +80,21 @@ Cache
 	nLNsFetch=106
 	nLNsFetchMiss=41
 Checkpoints
-	lastCheckpointEnd=0x0/0x29f70
+	lastCheckpointEnd=0x0/0x29f54
 	lastCheckpointId=2
-	lastCheckpointStart=0x0/0x29797
+	lastCheckpointStart=0x0/0x2977b
 	nCheckpoints=1
 	nFullBINFlush=8
 	nFullINFlush=16
 Cleaning
 	correctedAvgLNSize=NaN
-	totalLogSize=172 502
+	totalLogSize=172 460
 I/O
 	bufferBytes=9 732 096
-	endOfLog=0x0/0x2a1d9
+	endOfLog=0x0/0x2a1af
 	nCacheMiss=52
 	nFSyncRequests=2
-	nFSyncTime=302
+	nFSyncTime=226
 	nFSyncs=2
 	nFileOpens=7
 	nLogBuffers=16
@@ -40,7 +106,7 @@ I/O
 	nRepeatFaultReads=1
 	nSequentialReadBytes=7 591 189
 	nSequentialReads=66
-	nSequentialWriteBytes=2 801
+	nSequentialWriteBytes=2 794
 	nSequentialWrites=3
 Locks
 	nOwners=11
@@ -50,7 +116,7 @@ Locks
 Environment
 	btreeRelatchesRequired=7
 
-2013-04-10 13:23:10.938 UTC INFO [kvstore] rg1-rn1 (13:22:28.077 UTC -> 13:23:00.080 UTC)
+2013-04-10 18:56:09.189 UTC INFO [kvstore] rg1-rn1 (18:55:26.278 UTC -> 18:56:00.279 UTC)
 FeederManager
 	nMaxReplicaLag=NONE
 Replay
@@ -59,139 +125,15 @@ Replay
 VLSNIndex
 	nBucketsCreated=1
 
-2013-04-10 13:23:10.939 UTC INFO [kvstore] rg1-rn1 (13:22:28.077 UTC -> 13:23:00.080 UTC)
+2013-04-10 18:56:09.189 UTC INFO [kvstore] rg1-rn1 (18:55:26.278 UTC -> 18:56:00.279 UTC)
 Memory
-	freeMemory=5202296
+	freeMemory=5813096
 	maxMemory=259522560
-	totalMemory=56016896
+	totalMemory=56160256
 Copy
 	count=13
-	time=57
+	time=62
 MarkSweepCompact
 	count=3
-	time=44
-
-2013-04-10 13:24:20.561 UTC INFO [kvstore] rg1-rn1 (13:23:57.771 UTC -> 13:24:00.773 UTC)
-Cache
-	adminBytes=573
-	cacheTotalBytes=9 774 797
-	dataBytes=41 248
-	lockBytes=880
-	nBINsFetch=79
-	nBINsFetchMiss=8
-	nCachedBINs=8
-	nCachedUpperINs=8
-	nINCompactKey=2
-	nINNoTarget=4
-	nINSparseTarget=10
-	nLNsFetch=69
-	nLNsFetchMiss=42
-Checkpoints
-	lastCheckpointEnd=0x0/0x2a3d2
-	lastCheckpointId=3
-	lastCheckpointStart=0x0/0x2a1b6
-	nCheckpoints=1
-	nFullBINFlush=2
-	nFullINFlush=4
-Cleaning
-	correctedAvgLNSize=NaN
-	totalLogSize=173 497
-I/O
-	bufferBytes=9 732 096
-	endOfLog=0x0/0x2a408
-	nCacheMiss=60
-	nFSyncRequests=1
-	nFSyncTime=202
-	nFSyncs=1
-	nFileOpens=7
-	nLogBuffers=16
-	nLogFSyncs=3
-	nNotResident=60
-	nOpenFiles=1
-	nRandomReadBytes=4 096
-	nRandomReads=1
-	nRepeatFaultReads=1
-	nSequentialReadBytes=7 623 957
-	nSequentialReads=74
-	nSequentialWriteBytes=1 122
-	nSequentialWrites=2
-Locks
-	nOwners=11
-	nReadLocks=11
-	nRequests=146
-	nTotalLocks=11
-Environment
-	btreeRelatchesRequired=3
-
-2013-04-10 13:24:20.561 UTC INFO [kvstore] rg1-rn1 (13:23:57.771 UTC -> 13:24:00.773 UTC)
-FeederManager
-	nMaxReplicaLag=NONE
-Replay
-	maxCommitProcessingNanos=NONE
-	minCommitProcessingNanos=NONE
-
-2013-04-10 13:24:20.561 UTC INFO [kvstore] rg1-rn1 (13:23:57.771 UTC -> 13:24:00.773 UTC)
-Memory
-	freeMemory=14024824
-	maxMemory=259522560
-	totalMemory=56229888
-Copy
-	count=12
-	time=43
-MarkSweepCompact
-	count=3
-	time=46
-
-2013-04-10 13:25:20.538 UTC INFO [kvstore] rg1-rn1 (13:24:00.773 UTC -> 13:25:00.770 UTC)
-Cache
-	adminBytes=573
-	cacheTotalBytes=9 774 797
-	dataBytes=41 248
-	lockBytes=880
-	nBINsFetch=1
-	nBatchesMANUAL=9
-	nCachedBINs=8
-	nCachedUpperINs=8
-	nINCompactKey=2
-	nINNoTarget=4
-	nINSparseTarget=10
-	nLNsFetch=1
-Checkpoints
-	lastCheckpointEnd=0x0/0x2a3d2
-	lastCheckpointId=3
-	lastCheckpointStart=0x0/0x2a1b6
-Cleaning
-	correctedAvgLNSize=NaN
-	totalLogSize=173 624
-I/O
-	bufferBytes=9 732 096
-	endOfLog=0x0/0x2a63b
-	nLogBuffers=16
-	nOpenFiles=1
-Locks
-	nOwners=11
-	nReadLocks=11
-	nRequests=4
-	nTotalLocks=11
-
-2013-04-10 13:25:20.540 UTC INFO [kvstore] rg1-rn1 (13:24:00.773 UTC -> 13:25:00.770 UTC)
-FeederManager
-	nMaxReplicaLag=NONE
-Replay
-	maxCommitProcessingNanos=NONE
-	minCommitProcessingNanos=NONE
-VLSNIndex
-	nBucketsCreated=1
-
-2013-04-10 13:25:20.541 UTC INFO [kvstore] rg1-rn1 (13:24:00.773 UTC -> 13:25:00.770 UTC)
-Memory
-	freeMemory=6322160
-	maxMemory=259522560
-	totalMemory=56229888
-Copy
-	count=13
 	time=50
-MarkSweepCompact
-	count=3
-	time=46
 

@@ -189,7 +189,7 @@ public class PartsOfKeyforNoSQL extends JDialog implements TableModelListener
       {
         Process proc;
         try {
-          proc = Runtime.getRuntime().exec("java -jar C:\\Users\\AGavrilov.ESPHERE\\Documents\\GitHub\\NetBeansProjects\\OracleNoSQLConverter\\NoSQL_Storage\\kv-ee-2.0.26\\kv-2.0.26\\lib\\kvstore.jar kvlite");
+          proc = Runtime.getRuntime().exec("java -jar NoSQL_Storage\\kv-ee-2.0.26\\kv-2.0.26\\lib\\kvstore.jar kvlite");
         } catch (Throwable ex) {
           System.out.println(ex.getMessage());
         }
