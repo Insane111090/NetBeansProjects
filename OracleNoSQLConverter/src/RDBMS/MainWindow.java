@@ -30,8 +30,7 @@ public class MainWindow
    *
    */
   static public JTextField connectedUrlTxt = new JTextField();
-  static final ConnectionConfigDialog connectionSetupDialog = new ConnectionConfigDialog();
-  //static SelectMajorPart tableFields = new SelectMajorPart();
+  static final ConnectionRDBMSConfigDialog connectionSetupDialog = new ConnectionRDBMSConfigDialog();
   static JList listOfTables = new JList();//List of result tables from Database
   static JScrollPane scrollPaneonTableList = new JScrollPane();
   static JScrollPane scrollPaneonDescTab = new JScrollPane();
@@ -306,7 +305,8 @@ public class MainWindow
   /**
    *
    */
-  public static final class ConnectionConfigDialog extends JDialog
+  @SuppressWarnings("serial")
+  public static final class ConnectionRDBMSConfigDialog extends JDialog
   {
 
     final static JTextField serverTxt = new JTextField();//Field for server input
@@ -437,7 +437,7 @@ public class MainWindow
     }
 
     //main
-    ConnectionConfigDialog()
+    ConnectionRDBMSConfigDialog()
     {
       super(mainForm);//calls mainForm constructor
       final JButton ConnectButton = new JButton("Connect");//Button for connection
@@ -481,13 +481,13 @@ public class MainWindow
                     "Ошибка: " + e.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-            ConnectionConfigDialog.connectionErrorLabel.setText(
+            ConnectionRDBMSConfigDialog.connectionErrorLabel.setText(
                     "SQL Error: " + e.getMessage());
-            ConnectionConfigDialog.connectionStatusLabel.setBackground(
+            ConnectionRDBMSConfigDialog.connectionStatusLabel.setBackground(
                     Color.RED);
-            ConnectionConfigDialog.connectionStatusLabel.setText(
+            ConnectionRDBMSConfigDialog.connectionStatusLabel.setText(
                     "Failed");
-            ConnectionConfigDialog.connectionUrlLabel.setText("");
+            ConnectionRDBMSConfigDialog.connectionUrlLabel.setText("");
           } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(
                     mainForm,
@@ -501,19 +501,19 @@ public class MainWindow
             connectionUrlLabel.setText("");
           }
           if (DatabaseWrapper.isConnected()) {
-            ConnectionConfigDialog.connectionErrorLabel.setText("");
-            ConnectionConfigDialog.connectionStatusLabel.setBackground(
+            ConnectionRDBMSConfigDialog.connectionErrorLabel.setText("");
+            ConnectionRDBMSConfigDialog.connectionStatusLabel.setBackground(
                     Color.GREEN);
-            ConnectionConfigDialog.connectionStatusLabel.setText(
+            ConnectionRDBMSConfigDialog.connectionStatusLabel.setText(
                     "Succeed");
-            ConnectionConfigDialog.connectionUrlLabel.setText(
+            ConnectionRDBMSConfigDialog.connectionUrlLabel.setText(
                     "Connected to: " + url);
           } else {
-            ConnectionConfigDialog.connectionStatusLabel.setBackground(
+            ConnectionRDBMSConfigDialog.connectionStatusLabel.setBackground(
                     Color.RED);
-            ConnectionConfigDialog.connectionStatusLabel.setText(
+            ConnectionRDBMSConfigDialog.connectionStatusLabel.setText(
                     "Failed");
-            ConnectionConfigDialog.connectionUrlLabel.setText("");
+            ConnectionRDBMSConfigDialog.connectionUrlLabel.setText("");
           }
         }
       });

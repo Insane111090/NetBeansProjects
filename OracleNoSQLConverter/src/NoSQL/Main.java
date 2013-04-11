@@ -2,13 +2,14 @@ package NoSQL;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import javax.swing.JDialog;
 import oracle.kv.*;
 
 /**
  *
  * @author agavrilov
  */
-public class Main
+public class Main extends JDialog
 {
 
   static String port = "5000";
@@ -17,8 +18,7 @@ public class Main
 
   public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException
   {
-
-    Support orastore = new Support(store, host, port);
+    ConnectionNoSQLStorage orastore = new ConnectionNoSQLStorage(store, host, port);
     KVStore myStore = orastore.getStore();
 
     myStore.close();

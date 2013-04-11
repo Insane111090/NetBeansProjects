@@ -1,27 +1,27 @@
-2013-04-10 18:52:54.563 UTC INFO [snaService] Starting, configuration file: .\kvroot\config.xml
-2013-04-10 18:52:54.590 UTC INFO [snaService] Creating a Registry on port Insane:5000 server socket factory:null
-2013-04-10 18:52:54.680 UTC INFO [snaService] Bound to registry port 5000 using name snaService using SSF:null
-2013-04-10 18:52:54.682 UTC INFO [snaService] Using mgmt class oracle.kv.impl.mgmt.NoOpAgent
-2013-04-10 18:52:55.422 UTC INFO [snaService] BootstrapAdmin: Starting AdminService
-2013-04-10 18:52:55.423 UTC INFO [snaService] BootstrapAdmin: Started AdminService
-2013-04-10 18:52:55.423 UTC INFO [snaService] Service status changed from STARTING to WAITING_FOR_DEPLOY
-2013-04-10 18:52:55.433 UTC INFO [snaService] Starting in bootstrap mode
-2013-04-10 18:52:55.433 UTC INFO [snaService] Starting Command service on rmi://Insane:5000/commandService
-2013-04-10 18:52:55.461 UTC INFO [snaService] Starting Web service on port 5001
-2013-04-10 18:52:55.531 UTC INFO [snaService] jetty-7.4.0.v20110414
-2013-04-10 18:52:55.707 UTC INFO [snaService] Extract jar:file:/C:/Users/%d0%90%d0%bd%d0%b4%d1%80%d0%b5%d0%b9/Documents/GitHub/NetBeansProjects/OracleNoSQLConverter/NoSQL_Storage/kv-ee-2.0.26/kv-2.0.26/lib/kvstore.jar!/war/KVAdminUI/ to C:\Users\Андрей\AppData\Local\Temp\jetty-0.0.0.0-5001-KVAdminUI-_-any-\webapp
-2013-04-10 18:52:57.246 UTC INFO [snaService] NO JSP Support for /, did not find org.apache.jasper.servlet.JspServlet
-2013-04-10 18:52:57.325 UTC INFO [snaService] started o.e.j.w.WebAppContext{/,file:/C:/Users/Андрей/AppData/Local/Temp/jetty-0.0.0.0-5001-KVAdminUI-_-any-/webapp/},jar:file:/C:/Users/%d0%90%d0%bd%d0%b4%d1%80%d0%b5%d0%b9/Documents/GitHub/NetBeansProjects/OracleNoSQLConverter/NoSQL_Storage/kv-ee-2.0.26/kv-2.0.26/lib/kvstore.jar!/war/KVAdminUI
-2013-04-10 18:52:57.422 UTC INFO [snaService] Started SelectChannelConnector@0.0.0.0:5001 STARTING
-2013-04-10 18:52:57.422 UTC INFO [snaService] Started AdminService
-2013-04-10 18:52:57.422 UTC INFO [snaService] Thread returning for service BootstrapAdmin.5000
-2013-04-10 18:53:00.913 UTC INFO [snaService] Changing log files to log directory for store kvstore
-2013-04-10 18:53:01.942 UTC INFO [snaService] Register: root: .\kvroot, store: kvstore, hostingAdmin: true
-2013-04-10 18:53:01.943 UTC INFO [snaService] System architecture is x86
-2013-04-10 18:53:01.943 UTC INFO [snaService] Setting number of CPUs to 4
-2013-04-10 18:53:02.164 UTC INFO [snaService] Starting, configuration file: .\kvroot\config.xml
-2013-04-10 18:53:02.166 UTC INFO [snaService] Registered startup, config file: .\kvroot\kvstore\sn1\config.xml
-2013-04-10 18:53:02.173 UTC INFO [snaService] Changing log files to directory: .\kvroot\kvstore\log
-2013-04-10 18:55:25.706 UTC INFO [snaService] Starting, configuration file: .\kvroot\config.xml
-2013-04-10 18:55:25.711 UTC INFO [snaService] Registered startup, config file: .\kvroot\kvstore\sn1\config.xml
-2013-04-10 18:55:25.728 UTC INFO [snaService] Changing log files to directory: .\kvroot\kvstore\log
+2013-04-11 06:40:35.956 UTC INFO [snaService] Starting, configuration file: .\kvroot\config.xml
+2013-04-11 06:40:35.982 UTC INFO [snaService] Creating a Registry on port AGavrilov-nb2:5000 server socket factory:null
+2013-04-11 06:40:36.035 UTC INFO [snaService] Bound to registry port 5000 using name snaService using SSF:null
+2013-04-11 06:40:36.036 UTC INFO [snaService] Using mgmt class oracle.kv.impl.mgmt.NoOpAgent
+2013-04-11 06:40:36.264 UTC INFO [snaService] BootstrapAdmin: Starting AdminService
+2013-04-11 06:40:36.265 UTC INFO [snaService] BootstrapAdmin: Started AdminService
+2013-04-11 06:40:36.265 UTC INFO [snaService] Service status changed from STARTING to WAITING_FOR_DEPLOY
+2013-04-11 06:40:36.273 UTC INFO [snaService] Starting in bootstrap mode
+2013-04-11 06:40:36.273 UTC INFO [snaService] Starting Command service on rmi://AGavrilov-nb2:5000/commandService
+2013-04-11 06:40:36.301 UTC INFO [snaService] Starting Web service on port 5001
+2013-04-11 06:40:36.350 UTC INFO [snaService] jetty-7.4.0.v20110414
+2013-04-11 06:40:36.496 UTC INFO [snaService] Extract jar:file:/C:/Users/AGavrilov.ESPHERE/Documents/GitHub/NetBeansProjects/OracleNoSQLConverter/NoSQL_Storage/kv-ee-2.0.26/kv-2.0.26/lib/kvstore.jar!/war/KVAdminUI/ to C:\Users\AGavrilov.ESPHERE\AppData\Local\Temp\jetty-0.0.0.0-5001-KVAdminUI-_-any-\webapp
+2013-04-11 06:40:37.366 UTC INFO [snaService] NO JSP Support for /, did not find org.apache.jasper.servlet.JspServlet
+2013-04-11 06:40:37.387 UTC INFO [snaService] started o.e.j.w.WebAppContext{/,file:/C:/Users/AGavrilov.ESPHERE/AppData/Local/Temp/jetty-0.0.0.0-5001-KVAdminUI-_-any-/webapp/},jar:file:/C:/Users/AGavrilov.ESPHERE/Documents/GitHub/NetBeansProjects/OracleNoSQLConverter/NoSQL_Storage/kv-ee-2.0.26/kv-2.0.26/lib/kvstore.jar!/war/KVAdminUI
+2013-04-11 06:40:37.488 UTC INFO [snaService] Started SelectChannelConnector@0.0.0.0:5001 STARTING
+2013-04-11 06:40:37.488 UTC INFO [snaService] Started AdminService
+2013-04-11 06:40:37.489 UTC INFO [snaService] Thread returning for service BootstrapAdmin.5000
+2013-04-11 06:40:38.301 UTC INFO [snaService] Changing log files to log directory for store kvstore
+2013-04-11 06:40:39.934 UTC INFO [snaService] Register: root: .\kvroot, store: kvstore, hostingAdmin: true
+2013-04-11 06:40:39.935 UTC INFO [snaService] System architecture is x86
+2013-04-11 06:40:39.936 UTC INFO [snaService] Setting number of CPUs to 8
+2013-04-11 06:40:40.175 UTC INFO [snaService] Starting, configuration file: .\kvroot\config.xml
+2013-04-11 06:40:40.179 UTC INFO [snaService] Registered startup, config file: .\kvroot\kvstore\sn1\config.xml
+2013-04-11 06:40:40.187 UTC INFO [snaService] Changing log files to directory: .\kvroot\kvstore\log
+2013-04-11 06:41:36.387 UTC INFO [snaService] Starting, configuration file: .\kvroot\config.xml
+2013-04-11 06:41:36.392 UTC INFO [snaService] Registered startup, config file: .\kvroot\kvstore\sn1\config.xml
+2013-04-11 06:41:36.409 UTC INFO [snaService] Changing log files to directory: .\kvroot\kvstore\log

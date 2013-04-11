@@ -2,13 +2,9 @@ package RDBMS;
 
 import RDBMS.Util.MigPanel;
 import java.awt.event.ActionEvent;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.border.TitledBorder;
@@ -192,15 +188,7 @@ public class PartsOfKeyforNoSQL extends JDialog implements TableModelListener
           proc = Runtime.getRuntime().exec("java -jar NoSQL_Storage\\kv-ee-2.0.26\\kv-2.0.26\\lib\\kvstore.jar kvlite");
         } catch (Throwable ex) {
           System.out.println(ex.getMessage());
-        }
-        try {
-          NoSQL.Main.main(args);
-        } catch (FileNotFoundException ex) {
-          Logger.getLogger(PartsOfKeyforNoSQL.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-          Logger.getLogger(PartsOfKeyforNoSQL.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-          Logger.getLogger(PartsOfKeyforNoSQL.class.getName()).log(Level.SEVERE, null, ex);
+
         }
       }
     });

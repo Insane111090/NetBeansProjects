@@ -4,10 +4,10 @@
     <property name="hostingAdmin" value="true" type="BOOLEAN"/>
     <property name="storeName" value="kvstore" type="STRING"/>
     <property name="storageNodeId" value="1" type="INT"/>
-    <property name="hostname" value="Insane" type="STRING"/>
-    <property name="haHostname" value="Insane" type="STRING"/>
+    <property name="hostname" value="AGavrilov-nb2" type="STRING"/>
+    <property name="haHostname" value="AGavrilov-nb2" type="STRING"/>
     <property name="capacity" value="1" type="INT"/>
-    <property name="numCPUs" value="4" type="INT"/>
+    <property name="numCPUs" value="8" type="INT"/>
     <property name="rootDir" value="./kvroot" type="STRING"/>
     <property name="haPortRange" value="5005,5007" type="STRING"/>
     <property name="registryPort" value="5000" type="INT"/>

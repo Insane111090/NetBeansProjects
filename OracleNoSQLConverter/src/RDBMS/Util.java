@@ -6,15 +6,20 @@ import net.miginfocom.swing.MigLayout;
 public class Util
 {
 
-  static final class MigPanel extends JPanel
+//  public static JPanel MigPanel()
+//  {
+//    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//  }
+  @SuppressWarnings("serial")
+  public static class MigPanel extends JPanel
   {
 
-    MigPanel()
+    public MigPanel()
     {
       setLayout(new MigLayout());
     }
 
-    MigPanel(String constraints)
+    public MigPanel(String constraints)
     {
       setLayout(new MigLayout(constraints));
     }
