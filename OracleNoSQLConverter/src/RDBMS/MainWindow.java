@@ -225,7 +225,6 @@ public class MainWindow
         }
       }
     });
-
     /*
      * On buttons click event
      */
